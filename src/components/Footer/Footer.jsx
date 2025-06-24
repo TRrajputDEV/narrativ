@@ -1,141 +1,143 @@
-import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, Youtube, Send } from 'lucide-react';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import Logo from '../Logo'
 
 function Footer() {
-    const [email, setEmail] = useState('');
-    const [subscribed, setSubscribed] = useState(false);
-
-    const handleNewsletterSubmit = () => {
-        if (email.trim()) {
-            setSubscribed(true);
-            setEmail('');
-            setTimeout(() => setSubscribed(false), 3000);
-        }
-    };
-
     return (
-        <footer className="bg-black text-white">
-            {/* Main Footer Content */}
-            <div className="max-w-7xl mx-auto px-4 py-12">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    
-                    {/* Brand & About Section */}
-                    <div className="lg:col-span-1">
-                        <h3 className="text-2xl font-bold mb-4 text-white">YourBlog</h3>
-                        <p className="text-gray-300 mb-6 leading-relaxed">
-                            Discover inspiring stories, expert insights, and the latest trends. 
-                            Join our community of passionate readers and writers.
-                        </p>
-                        <div className="flex space-x-4">
-                            <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300">
-                                <Facebook size={20} />
-                            </a>
-                            <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300">
-                                <Twitter size={20} />
-                            </a>
-                            <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300">
-                                <Instagram size={20} />
-                            </a>
-                            <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300">
-                                <Linkedin size={20} />
-                            </a>
-                            <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300">
-                                <Youtube size={20} />
-                            </a>
+        <section className="relative overflow-hidden py-10 bg-gray-400 border border-t-2 border-t-black">
+            <div className="relative z-10 mx-auto max-w-7xl px-4">
+                <div className="-m-6 flex flex-wrap">
+                    <div className="w-full p-6 md:w-1/2 lg:w-5/12">
+                        <div className="flex h-full flex-col justify-between">
+                            <div className="mb-4 inline-flex items-center">
+                                <Logo width="100px" />
+                            </div>
+                            <div>
+                                <p className="text-sm text-gray-600">
+                                    &copy; Copyright 2023. All Rights Reserved by DevUI.
+                                </p>
+                            </div>
                         </div>
                     </div>
-
-                    {/* Quick Links */}
-                    <div>
-                        <h4 className="text-lg font-semibold mb-4 text-white">Quick Links</h4>
-                        <ul className="space-y-3">
-                            <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-300">Home</a></li>
-                            <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-300">About Us</a></li>
-                            <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-300">All Articles</a></li>
-                            <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-300">Categories</a></li>
-                            <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-300">Write for Us</a></li>
-                            <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-300">Contact</a></li>
-                        </ul>
-                    </div>
-
-                    {/* Categories */}
-                    <div>
-                        <h4 className="text-lg font-semibold mb-4 text-white">Categories</h4>
-                        <ul className="space-y-3">
-                            <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-300">Technology</a></li>
-                            <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-300">Lifestyle</a></li>
-                            <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-300">Travel</a></li>
-                            <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-300">Health & Wellness</a></li>
-                            <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-300">Business</a></li>
-                            <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-300">Food & Recipe</a></li>
-                        </ul>
-                    </div>
-
-                    {/* Newsletter & Contact */}
-                    <div>
-                        <h4 className="text-lg font-semibold mb-4 text-white">Stay Connected</h4>
-                        
-                        {/* Newsletter Signup */}
-                        <div className="mb-6">
-                            <p className="text-gray-300 mb-3">Subscribe to our newsletter</p>
-                            <div className="flex flex-col space-y-2">
-                                <input
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="Enter your email"
-                                    className="px-3 py-2 bg-gray-800 border border-gray-600 rounded focus:outline-none focus:border-white text-white"
-                                />
-                                <button
-                                    onClick={handleNewsletterSubmit}
-                                    className="bg-white text-black hover:bg-gray-200 px-4 py-2 rounded font-medium transition-colors duration-300 flex items-center justify-center space-x-2"
-                                >
-                                    <Send size={16} />
-                                    <span>Subscribe</span>
-                                </button>
-                            </div>
-                            {subscribed && (
-                                <p className="text-green-400 text-sm mt-2">✓ Successfully subscribed!</p>
-                            )}
+                    <div className="w-full p-6 md:w-1/2 lg:w-2/12">
+                        <div className="h-full">
+                            <h3 className="tracking-px mb-9  text-xs font-semibold uppercase text-gray-500">
+                                Company
+                            </h3>
+                            <ul>
+                                <li className="mb-4">
+                                    <Link
+                                        className=" text-base font-medium text-gray-900 hover:text-gray-700"
+                                        to="/"
+                                    >
+                                        Features
+                                    </Link>
+                                </li>
+                                <li className="mb-4">
+                                    <Link
+                                        className=" text-base font-medium text-gray-900 hover:text-gray-700"
+                                        to="/"
+                                    >
+                                        Pricing
+                                    </Link>
+                                </li>
+                                <li className="mb-4">
+                                    <Link
+                                        className=" text-base font-medium text-gray-900 hover:text-gray-700"
+                                        to="/"
+                                    >
+                                        Affiliate Program
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        className=" text-base font-medium text-gray-900 hover:text-gray-700"
+                                        to="/"
+                                    >
+                                        Press Kit
+                                    </Link>
+                                </li>
+                            </ul>
                         </div>
-
-                        {/* Contact Info */}
-                        <div className="space-y-3">
-                            <div className="flex items-center space-x-3 text-gray-300">
-                                <Mail size={16} />
-                                <span>hello@yourblog.com</span>
-                            </div>
-                            <div className="flex items-center space-x-3 text-gray-300">
-                                <Phone size={16} />
-                                <span>+1 (555) 123-4567</span>
-                            </div>
-                            <div className="flex items-center space-x-3 text-gray-300">
-                                <MapPin size={16} />
-                                <span>New York, NY</span>
-                            </div>
+                    </div>
+                    <div className="w-full p-6 md:w-1/2 lg:w-2/12">
+                        <div className="h-full">
+                            <h3 className="tracking-px mb-9  text-xs font-semibold uppercase text-gray-500">
+                                Support
+                            </h3>
+                            <ul>
+                                <li className="mb-4">
+                                    <Link
+                                        className=" text-base font-medium text-gray-900 hover:text-gray-700"
+                                        to="/"
+                                    >
+                                        Account
+                                    </Link>
+                                </li>
+                                <li className="mb-4">
+                                    <Link
+                                        className=" text-base font-medium text-gray-900 hover:text-gray-700"
+                                        to="/"
+                                    >
+                                        Help
+                                    </Link>
+                                </li>
+                                <li className="mb-4">
+                                    <Link
+                                        className=" text-base font-medium text-gray-900 hover:text-gray-700"
+                                        to="/"
+                                    >
+                                        Contact Us
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        className=" text-base font-medium text-gray-900 hover:text-gray-700"
+                                        to="/"
+                                    >
+                                        Customer Support
+                                    </Link>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="w-full p-6 md:w-1/2 lg:w-3/12">
+                        <div className="h-full">
+                            <h3 className="tracking-px mb-9  text-xs font-semibold uppercase text-gray-500">
+                                Legals
+                            </h3>
+                            <ul>
+                                <li className="mb-4">
+                                    <Link
+                                        className=" text-base font-medium text-gray-900 hover:text-gray-700"
+                                        to="/"
+                                    >
+                                        Terms &amp; Conditions
+                                    </Link>
+                                </li>
+                                <li className="mb-4">
+                                    <Link
+                                        className=" text-base font-medium text-gray-900 hover:text-gray-700"
+                                        to="/"
+                                    >
+                                        Privacy Policy
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        className=" text-base font-medium text-gray-900 hover:text-gray-700"
+                                        to="/"
+                                    >
+                                        Licensing
+                                    </Link>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
-
-            {/* Bottom Footer */}
-            <div className="border-t border-gray-700">
-                <div className="max-w-7xl mx-auto px-4 py-6">
-                    <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                        <div className="text-gray-400 text-sm">
-                            © 2025 YourBlog. All rights reserved.
-                        </div>
-                        <div className="flex space-x-6 text-sm">
-                            <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300">Privacy Policy</a>
-                            <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300">Terms of Service</a>
-                            <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300">Cookie Policy</a>
-                            <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300">Sitemap</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    );
+        </section>
+    )
 }
 
-export default Footer;
+export default Footer
