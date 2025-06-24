@@ -6,11 +6,23 @@ function Button({
     bgColor = 'bg-blue-600',
     textColor = 'text-white',
     className = '',
+    hoverBgColor = 'hover:bg-blue-700',
+    focusRing = 'focus:ring-2 focus:ring-blue-400 focus:outline-none',
+    shadow = 'shadow-md',
+    transition = 'transition duration-200',
     ...props
 }) {
     return (
-        <button className={` px-4 py-2 rounded-lg ${bgColor} ${textColor} ${className}`}
-        {...props}>
+        <button
+            type={type}
+            className={`
+                px-5 py-2.5 rounded-lg font-semibold
+                ${bgColor} ${textColor}
+                ${hoverBgColor} ${focusRing} ${shadow} ${transition}
+                ${className}
+            `}
+            {...props}
+        >
             {children}
         </button>
     )
