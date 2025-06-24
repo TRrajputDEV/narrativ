@@ -1,6 +1,3 @@
-// src/components/PostCard.jsx
-// Optimized PostCard using SmartImage component
-
 import React from 'react'
 import appwriteService from "../appwrite/config"
 import { Link } from 'react-router-dom'
@@ -12,40 +9,31 @@ function PostCard({ $id, title, featuredImage }) {
             title,
             featuredImage,
             error: error.message
-        });
-    };
+        })
+    }
 
     const handleImageLoad = () => {
-        console.log(`PostCard image loaded successfully for post ${$id}`);
-    };
+        console.log(`PostCard image loaded successfully for post ${$id}`)
+    }
 
     return (
         <Link to={`/post/${$id}`} className="block">
-            <article className='w-full bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-100'>
-                {/* Image container with fixed aspect ratio */}
-                <div className='w-full h-48 bg-gray-100'>
+            <article className="w-full h-full border border-gray-800 bg-black text-white rounded-lg overflow-hidden flex flex-col hover:scale-[1.02] transition-transform duration-300">
+                {/* Image */}
+                <div className="w-full aspect-video bg-gray-900 overflow-hidden">
                     <SmartImage
-                        src={featuredImage ? appwriteService.getOptimizedPreview(featuredImage, 'card') : null}
+                        src={featuredImage ? appwriteService.getFilePreview(featuredImage) : null}
                         alt={title}
-                        className="w-full h-full"
+                        className="w-full h-full object-cover"
                         onLoad={handleImageLoad}
                         onError={handleImageError}
-                        dimensions={{ width: 400, height: 300 }}
-                        lazy={true}
-                        retries={2}
                     />
                 </div>
-                
+
                 {/* Content */}
-                <div className="p-4">
-                    <h2 className='text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200 line-clamp-2'>
-                        {title}
-                    </h2>
-                    
-                    {/* Optional: Add excerpt or metadata */}
-                    <div className="mt-2 flex items-center text-sm text-gray-500">
-                        <span>Read more →</span>
-                    </div>
+                <div className="p-4 flex flex-col flex-1">
+                    <h2 className="text-lg font-semibold mb-2 line-clamp-2">{title}</h2>
+                    <div className="mt-auto text-sm text-gray-400">Read More →</div>
                 </div>
             </article>
         </Link>

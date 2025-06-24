@@ -244,7 +244,7 @@ export class Service {
                 quality
             });
 
-            const previewUrl = this.bucket.getFilePreview(
+            const previewUrl = this.bucket.getFileView(
                 conf.appwriteBucketId,
                 fileId,
                 width,
