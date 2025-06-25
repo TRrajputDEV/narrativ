@@ -23,24 +23,39 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-green-50">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading Narrativ...</p>
+          <div className="relative">
+            {/* Premium loading spinner */}
+            <div className="w-16 h-16 border-4 border-emerald-100 rounded-full animate-spin mx-auto"></div>
+            <div className="absolute inset-0 w-16 h-16 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          </div>
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-green-700">
+              Loading Narrativ
+            </h3>
+            <p className="text-gray-500 text-sm mt-1">Preparing your premium experience...</p>
+          </div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-green-50">
       <Header />
       
-      <main className="flex-grow pt-4 pb-12">
-        <Outlet />
+      {/* Main content area with sidebar spacing */}
+      <main className="md:ml-64 transition-all duration-300">
+        <div className="min-h-screen pt-16 md:pt-0">
+          <Outlet />
+        </div>
       </main>
       
-      <Footer />
+      {/* Footer with sidebar spacing */}
+      {/* <footer className="md:ml-64 transition-all duration-300">
+        <Footer />
+      </footer> */}
     </div>
   )
 }

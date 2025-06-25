@@ -10,6 +10,7 @@ function Signup() {
     const navigate = useNavigate()
     const [error, setError] = useState("")
     const [isLoading, setIsLoading] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
     const dispatch = useDispatch()
     const { register, handleSubmit, formState: { errors } } = useForm()
 
@@ -30,172 +31,219 @@ function Signup() {
         }
     }
 
+    const InputField = ({ 
+        id, 
+        label, 
+        type, 
+        placeholder, 
+        register, 
+        validation, 
+        error,
+        isPassword = false,
+        helpText = ""
+    }) => (
+        <div className="space-y-2">
+            <label htmlFor={id} className="block text-sm font-semibold text-gray-700">
+                {label}
+            </label>
+            <div className="relative">
+                <Input
+                    id={id}
+                    type={isPassword ? (showPassword ? 'text' : 'password') : type}
+                    placeholder={placeholder}
+                    className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 ${
+                        error 
+                            ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-500/20' 
+                            : 'border-gray-200 bg-gray-50 focus:border-emerald-500 focus:ring-emerald-500/20 hover:border-gray-300'
+                    } focus:outline-none focus:ring-2`}
+                    {...register(id, validation)}
+                />
+                {isPassword && (
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-emerald-600 transition-colors"
+                    >
+                        {showPassword ? (
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L8.464 8.464M14.12 14.12l1.415 1.415M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        ) : (
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        )}
+                    </button>
+                )}
+            </div>
+            {error && (
+                <p className="text-sm text-red-600 flex items-center font-medium">
+                    <svg className="w-4 h-4 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    {error.message}
+                </p>
+            )}
+            {helpText && !error && (
+                <p className="text-xs text-gray-500 mt-1">
+                    {helpText}
+                </p>
+            )}
+        </div>
+    )
+
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-100 p-4">
-            <div className="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-                {/* Decorative header */}
-                <div className="bg-gradient-to-r from-indigo-600 to-blue-700 p-6 text-center">
-                    <div className="flex justify-center mb-4">
-                        <div className="bg-white w-16 h-16 rounded-full flex items-center justify-center shadow-lg">
-                            <div className="bg-gradient-to-r from-indigo-600 to-blue-700 w-12 h-12 rounded-full flex items-center justify-center">
-                                <span className="text-white font-bold text-2xl">N</span>
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-green-50 flex items-center justify-center p-4">
+            <div className="relative w-full max-w-md">
+                {/* Main Card */}
+                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                    {/* Header Section */}
+                    <div className="bg-gradient-to-br from-emerald-700 to-green-800 px-8 py-12 text-center">
+                        {/* Logo */}
+                        <div className="flex justify-center mb-6">
+                            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg">
+                                <div className="w-12 h-12 bg-gradient-to-br from-emerald-600 to-green-700 rounded-xl flex items-center justify-center">
+                                    <span className="text-white font-bold text-xl">N</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <h2 className="text-2xl font-bold text-white">Create your Narrativ account</h2>
-                    <p className="text-indigo-100 mt-2">Start your storytelling journey</p>
-                </div>
-                
-                <div className="p-8">
-                    {error && (
-                        <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4 flex items-start">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-red-500 mt-0.5 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <span className="text-red-700">{error}</span>
+                        
+                        {/* Welcome Text */}
+                        <div className="space-y-2">
+                            <h1 className="text-3xl font-bold text-white">
+                                Create Your Account
+                            </h1>
+                            <p className="text-emerald-100 text-lg">
+                                Start your storytelling journey
+                            </p>
                         </div>
-                    )}
+                    </div>
                     
-                    <form onSubmit={handleSubmit(create)} className="space-y-6">
-                        <div>
-                            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1.5">
-                                Full Name
-                            </label>
-                            <Input
+                    {/* Form Section */}
+                    <div className="px-6 py-8 sm:px-8 sm:py-10">
+                        {error && (
+                            <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4 flex items-start">
+                                <div className="flex-shrink-0 mr-3">
+                                    <div className="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center">
+                                        <svg className="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div className="flex-1">
+                                    <p className="text-red-800 font-medium">{error}</p>
+                                </div>
+                            </div>
+                        )}
+                        
+                        <form onSubmit={handleSubmit(create)} className="space-y-6">
+                            <InputField
                                 id="name"
+                                label="Full Name"
+                                type="text"
                                 placeholder="John Doe"
-                                className={`w-full ${errors.name ? 'border-red-300' : 'border-gray-300'}`}
-                                {...register("name", {
+                                register={register}
+                                validation={{
                                     required: "Full name is required",
                                     minLength: {
                                         value: 3,
                                         message: "Name must be at least 3 characters"
                                     }
-                                })}
+                                }}
+                                error={errors.name}
                             />
-                            {errors.name && (
-                                <p className="mt-1.5 text-sm text-red-600 flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    {errors.name.message}
-                                </p>
-                            )}
-                        </div>
-                        
-                        <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
-                                Email address
-                            </label>
-                            <Input
+                            
+                            <InputField
                                 id="email"
+                                label="Email Address"
                                 type="email"
                                 placeholder="you@example.com"
-                                className={`w-full ${errors.email ? 'border-red-300' : 'border-gray-300'}`}
-                                {...register("email", {
+                                register={register}
+                                validation={{
                                     required: "Email is required",
                                     pattern: {
                                         value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-                                        message: "Please enter a valid email"
+                                        message: "Please enter a valid email address"
                                     }
-                                })}
+                                }}
+                                error={errors.email}
                             />
-                            {errors.email && (
-                                <p className="mt-1.5 text-sm text-red-600 flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    {errors.email.message}
-                                </p>
-                            )}
-                        </div>
-                        
-                        <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5">
-                                Password
-                            </label>
-                            <Input
+                            
+                            <InputField
                                 id="password"
+                                label="Password"
                                 type="password"
                                 placeholder="••••••••"
-                                className={`w-full ${errors.password ? 'border-red-300' : 'border-gray-300'}`}
-                                {...register("password", {
+                                register={register}
+                                validation={{
                                     required: "Password is required",
                                     minLength: {
                                         value: 8,
                                         message: "Password must be at least 8 characters"
                                     }
-                                })}
+                                }}
+                                error={errors.password}
+                                isPassword={true}
+                                helpText="Use at least 8 characters with a mix of letters and numbers"
                             />
-                            {errors.password && (
-                                <p className="mt-1.5 text-sm text-red-600 flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    {errors.password.message}
-                                </p>
-                            )}
-                            <p className="mt-1.5 text-xs text-gray-500">
-                                Use at least 8 characters with a mix of letters and numbers
+                            
+                            {/* Submit Button */}
+                            <div className="pt-2">
+                                <Button
+                                    type="submit"
+                                    className="w-full py-3.5 font-medium rounded-lg shadow-sm transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
+                                    gradient={true}
+                                    disabled={isLoading}
+                                >
+                                    {isLoading ? (
+                                        <div className="flex items-center justify-center">
+                                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-3"></div>
+                                            Creating account...
+                                        </div>
+                                    ) : (
+                                        <div className="flex items-center justify-center">
+                                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                            Create Account
+                                        </div>
+                                    )}
+                                </Button>
+                            </div>
+                        </form>
+                        
+                        {/* Sign In Link */}
+                        <div className="text-center mt-8">
+                            <p className="text-gray-600 text-sm">
+                                Already have an account?{' '}
+                                <Link
+                                    to="/login"
+                                    className="font-semibold text-emerald-600 hover:text-green-700 transition-colors duration-200 hover:underline"
+                                >
+                                    Sign in
+                                </Link>
                             </p>
                         </div>
-                        
-                        <Button
-                            type="submit"
-                            className="w-full py-3.5 text-base font-medium rounded-xl shadow-md transition-all disabled:opacity-70 disabled:cursor-not-allowed"
-                            bgColor="bg-gradient-to-r from-indigo-600 to-blue-700 hover:from-indigo-700 hover:to-blue-800"
-                            disabled={isLoading}
-                        >
-                            {isLoading ? (
-                                <div className="flex items-center justify-center">
-                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                    </svg>
-                                    Creating account...
-                                </div>
-                            ) : (
-                                "Create your account"
-                            )}
-                        </Button>
-                    </form>
-                    
-                    <div className="mt-6 flex items-center">
-                        <div className="border-t border-gray-200 flex-grow"></div>
-                        <span className="mx-4 text-sm text-gray-500">or continue with</span>
-                        <div className="border-t border-gray-200 flex-grow"></div>
                     </div>
-                    
-                    <div className="mt-6 grid grid-cols-2 gap-3">
-                        <button 
-                            type="button"
-                            className="w-full inline-flex justify-center items-center gap-2 py-2.5 px-4 border border-gray-300 rounded-xl shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-                        >
-                            <svg className="w-5 h-5 text-[#4285F4]" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/>
+                </div>
+                
+                {/* Trust Indicators */}
+                <div className="mt-6 text-center">
+                    <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-500">
+                        <div className="flex items-center">
+                            <svg className="w-4 h-4 mr-1.5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
                             </svg>
-                            Google
-                        </button>
-                        <button 
-                            type="button"
-                            className="w-full inline-flex justify-center items-center gap-2 py-2.5 px-4 border border-gray-300 rounded-xl shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-                        >
-                            <svg className="w-5 h-5 text-[#1877F2]" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24">
-                                <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd"/>
+                            Secure Registration
+                        </div>
+                        <div className="flex items-center">
+                            <svg className="w-4 h-4 mr-1.5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                             </svg>
-                            Facebook
-                        </button>
+                            Trusted Platform
+                        </div>
                     </div>
-                    
-                    <p className="mt-8 text-center text-sm text-gray-600">
-                        Already have an account?&nbsp;
-                        <Link
-                            to="/login"
-                            className="font-semibold text-indigo-600 hover:text-indigo-500 hover:underline transition-colors"
-                        >
-                            Sign in instead
-                        </Link>
-                    </p>
                 </div>
             </div>
         </div>

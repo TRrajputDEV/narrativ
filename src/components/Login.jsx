@@ -67,18 +67,18 @@ function Login() {
                     id={id}
                     type={isPassword ? (showPassword ? 'text' : 'password') : type}
                     placeholder={placeholder}
-                    className={`w-full px-4 py-3.5 rounded-xl border-2 transition-all duration-200 ${
+                    className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 ${
                         error 
                             ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-500/20' 
-                            : 'border-gray-200 bg-gray-50 focus:border-blue-500 focus:ring-blue-500/20 hover:border-gray-300'
-                    } focus:outline-none focus:ring-4`}
+                            : 'border-gray-200 bg-gray-50 focus:border-emerald-500 focus:ring-emerald-500/20 hover:border-gray-300'
+                    } focus:outline-none focus:ring-2`}
                     {...register(id, validation)}
                 />
                 {isPassword && (
                     <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                        className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-emerald-600 transition-colors"
                     >
                         {showPassword ? (
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,27 +105,18 @@ function Login() {
     )
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center p-4">
-            {/* Background Pattern */}
-            <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute -top-4 -left-4 w-72 h-72 bg-gradient-to-br from-blue-400/20 to-indigo-400/20 rounded-full blur-3xl"></div>
-                <div className="absolute -bottom-4 -right-4 w-72 h-72 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl"></div>
-            </div>
-            
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-green-50 flex items-center justify-center p-4">
             <div className="relative w-full max-w-md">
                 {/* Main Card */}
-                <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
+                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                     {/* Header Section */}
-                    <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 px-8 py-12 text-center">
+                    <div className="bg-gradient-to-br from-emerald-700 to-green-800 px-8 py-12 text-center">
                         {/* Logo */}
                         <div className="flex justify-center mb-6">
-                            <div className="relative">
-                                <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center shadow-2xl">
-                                    <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center">
-                                        <span className="text-white font-bold text-2xl">N</span>
-                                    </div>
+                            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg">
+                                <div className="w-12 h-12 bg-gradient-to-br from-emerald-600 to-green-700 rounded-xl flex items-center justify-center">
+                                    <span className="text-white font-bold text-xl">N</span>
                                 </div>
-                                <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full border-2 border-white shadow-lg"></div>
                             </div>
                         </div>
                         
@@ -134,19 +125,14 @@ function Login() {
                             <h1 className="text-3xl font-bold text-white">
                                 Welcome Back
                             </h1>
-                            <p className="text-blue-100 text-lg">
-                                Sign in to continue your storytelling journey
+                            <p className="text-emerald-100 text-lg">
+                                Sign in to continue your journey
                             </p>
                         </div>
-                        
-                        {/* Decorative Elements */}
-                        <div className="absolute top-4 left-4 w-2 h-2 bg-blue-400 rounded-full opacity-60"></div>
-                        <div className="absolute top-8 right-6 w-1 h-1 bg-indigo-300 rounded-full opacity-40"></div>
-                        <div className="absolute bottom-6 left-8 w-1.5 h-1.5 bg-purple-400 rounded-full opacity-50"></div>
                     </div>
                     
                     {/* Form Section */}
-                    <div className="px-8 py-10">
+                    <div className="px-6 py-8 sm:px-8 sm:py-10">
                         <ErrorMessage error={error} />
                         
                         <form onSubmit={handleSubmit(login)} className="space-y-6">
@@ -184,24 +170,24 @@ function Login() {
                             />
                             
                             {/* Submit Button */}
-                            <div className="pt-4">
+                            <div className="pt-2">
                                 <Button
                                     type="submit"
-                                    className="w-full py-4 text-lg font-semibold rounded-xl shadow-lg transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
-                                    bgColor="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 active:scale-[0.98]"
+                                    className="w-full py-3.5 font-medium rounded-lg shadow-sm transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
+                                    gradient={true}
                                     disabled={isLoading}
                                 >
                                     {isLoading ? (
                                         <div className="flex items-center justify-center">
                                             <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-3"></div>
-                                            Signing you in...
+                                            Signing in...
                                         </div>
                                     ) : (
                                         <div className="flex items-center justify-center">
                                             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                                             </svg>
-                                            Sign In to Your Account
+                                            Sign In
                                         </div>
                                     )}
                                 </Button>
@@ -209,7 +195,7 @@ function Login() {
                         </form>
                         
                         {/* Divider */}
-                        <div className="flex items-center my-8">
+                        <div className="flex items-center my-6">
                             <div className="flex-1 border-t border-gray-200"></div>
                             <span className="px-4 text-sm text-gray-500 bg-white">or</span>
                             <div className="flex-1 border-t border-gray-200"></div>
@@ -221,7 +207,7 @@ function Login() {
                                 New to Narrativ?{' '}
                                 <Link
                                     to="/signup"
-                                    className="font-semibold text-blue-600 hover:text-blue-700 transition-colors duration-200 hover:underline"
+                                    className="font-semibold text-emerald-600 hover:text-green-700 transition-colors duration-200 hover:underline"
                                 >
                                     Create your account
                                 </Link>
@@ -244,16 +230,16 @@ function Login() {
                 </div>
                 
                 {/* Trust Indicators */}
-                <div className="mt-8 text-center">
-                    <div className="flex items-center justify-center space-x-6 text-sm text-gray-500">
+                <div className="mt-6 text-center">
+                    <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-500">
                         <div className="flex items-center">
-                            <svg className="w-4 h-4 mr-1.5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <svg className="w-4 h-4 mr-1.5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
                             </svg>
                             Secure Login
                         </div>
                         <div className="flex items-center">
-                            <svg className="w-4 h-4 mr-1.5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                            <svg className="w-4 h-4 mr-1.5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                             </svg>
                             Trusted Platform

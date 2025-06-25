@@ -1,11 +1,11 @@
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import appwriteService from "../appwrite/config";
 import { Button, Container } from "../components";
 import SmartImage from "../components/SmartImage";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
+import { FaArrowUp, FaEdit, FaTrash } from "react-icons/fa";
 
 export default function Post() {
     const [post, setPost] = useState(null);
@@ -13,13 +13,31 @@ export default function Post() {
     const [error, setError] = useState(null);
     const [imageLoaded, setImageLoaded] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [showScrollTop, setShowScrollTop] = useState(false);
     
     const { slug } = useParams();
     const navigate = useNavigate();
     const userData = useSelector((state) => state.auth.userData);
+    const contentRef = useRef(null);
 
     const isAuthor = post && userData ? post.userId === userData.$id : false;
 
+    // Scroll to top on mount
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    // Handle scroll events for scroll-to-top button
+    useEffect(() => {
+        const handleScroll = () => {
+            setShowScrollTop(window.scrollY > 300);
+        };
+        
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Fetch post data
     useEffect(() => {
         if (slug) {
             setLoading(true);
@@ -87,36 +105,40 @@ export default function Post() {
             });
     };
 
-    // Modern Loading State with Shimmer Effect
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
+    // Loading State
     if (loading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
                 <Container>
                     <div className="py-8 md:py-16">
-                        {/* Hero Section Skeleton */}
-                        <div className="relative mb-16">
-                            <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 via-pink-400/20 to-red-400/20 rounded-3xl blur-3xl"></div>
-                            <div className="relative bg-white/70 backdrop-blur-xl rounded-3xl p-8 border border-white/20 shadow-2xl">
-                                <div className="animate-pulse">
-                                    <div className="h-8 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-2xl mb-6 bg-[length:200%_100%] animate-shimmer"></div>
-                                    <div className="h-4 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-xl mb-4 w-3/4 bg-[length:200%_100%] animate-shimmer"></div>
-                                </div>
-                            </div>
+                        {/* Title Skeleton */}
+                        <div className="max-w-3xl mx-auto mb-8">
+                            <div className="h-10 bg-gray-200 rounded-xl mb-6 w-3/4 mx-auto"></div>
+                            <div className="h-4 bg-gray-200 rounded-xl mb-4 w-1/2 mx-auto"></div>
                         </div>
 
                         {/* Featured Image Skeleton */}
-                        <div className="relative mb-12">
-                            <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 rounded-3xl blur-2xl"></div>
-                            <div className="relative aspect-[21/9] bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-3xl bg-[length:200%_100%] animate-shimmer"></div>
-                        </div>
+                        <div className="aspect-video bg-gray-200 rounded-xl mb-12"></div>
 
                         {/* Content Skeleton */}
-                        <div className="max-w-4xl mx-auto">
-                            <div className="animate-pulse space-y-6">
-                                {[...Array(5)].map((_, i) => (
-                                    <div key={i} className="h-4 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-xl bg-[length:200%_100%] animate-shimmer" style={{width: `${Math.random() * 40 + 60}%`}}></div>
-                                ))}
-                            </div>
+                        <div className="max-w-3xl mx-auto space-y-4">
+                            {[...Array(8)].map((_, i) => (
+                                <div 
+                                    key={i} 
+                                    className="h-4 bg-gray-200 rounded-xl"
+                                    style={{width: `${Math.random() * 40 + 60}%`}}
+                                ></div>
+                            ))}
+                            <div className="h-4 bg-gray-200 rounded-xl w-3/4"></div>
+                            <div className="h-4 bg-gray-200 rounded-xl w-full"></div>
+                            <div className="h-4 bg-gray-200 rounded-xl w-5/6"></div>
                         </div>
                     </div>
                 </Container>
@@ -124,25 +146,26 @@ export default function Post() {
         );
     }
 
-    // Modern Error State
+    // Error State
     if (error) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-red-50 via-pink-50 to-orange-50 flex items-center justify-center">
+            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50 flex items-center justify-center">
                 <Container>
                     <div className="text-center max-w-md mx-auto">
-                        <div className="relative mb-8">
-                            <div className="absolute inset-0 bg-gradient-to-r from-red-400/20 via-pink-400/20 to-orange-400/20 rounded-full blur-2xl"></div>
-                            <div className="relative text-8xl animate-bounce">🚫</div>
+                        <div className="mb-8">
+                            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-red-50 to-orange-50 mb-5">
+                                <span className="text-2xl">⚠️</span>
+                            </div>
                         </div>
-                        <div className="bg-white/70 backdrop-blur-xl rounded-3xl p-8 border border-white/20 shadow-2xl">
-                            <h1 className="text-3xl font-bold bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent mb-4">
+                        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+                            <h1 className="text-2xl font-bold text-gray-800 mb-4">
                                 Oops! Something went wrong
                             </h1>
-                            <p className="text-red-600 text-lg mb-4 font-medium">{error}</p>
-                            <p className="text-gray-600 mb-8">Redirecting to home page...</p>
+                            <p className="text-gray-600 mb-6">{error}</p>
+                            <p className="text-gray-500 mb-8">Redirecting to home page...</p>
                             <Button 
                                 onClick={() => navigate("/")} 
-                                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold px-8 py-3 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                                className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white px-6 py-3 rounded-lg"
                             >
                                 Take Me Home
                             </Button>
@@ -154,42 +177,53 @@ export default function Post() {
     }
 
     return post ? (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-green-50">
+            {/* Scroll to top button */}
+            {showScrollTop && (
+                <button 
+                    onClick={scrollToTop}
+                    className="fixed bottom-6 right-6 z-50 w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                    aria-label="Scroll to top"
+                >
+                    <FaArrowUp />
+                </button>
+            )}
+
             <Container>
-                <div className="py-10 grid gap-10 max-w-5xl mx-auto">
+                <div className="py-10 grid gap-10 max-w-4xl mx-auto">
                     {/* Title & Meta */}
-                    <div className="grid gap-2">
-                        <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{post.title}</h1>
-                        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+                    <div className="grid gap-4 text-center">
+                        <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
+                            {post.title}
+                        </h1>
+                        
+                        <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-600">
                             <span>
                                 {new Date(post.$createdAt).toLocaleDateString('en-US', {
                                     year: 'numeric',
-                                    month: 'short',
+                                    month: 'long',
                                     day: 'numeric'
                                 })}
                             </span>
                             {post.$updatedAt !== post.$createdAt && (
-                                <span className="text-blue-500">Updated {new Date(post.$updatedAt).toLocaleDateString()}</span>
+                                <span className="text-emerald-600 flex items-center">
+                                    <span className="mr-1">•</span> Updated {new Date(post.$updatedAt).toLocaleDateString()}
+                                </span>
                             )}
                         </div>
                     </div>
 
                     {/* Featured Image */}
                     {post.featuredImage && (
-                        <div className="w-full rounded-xl overflow-hidden bg-gray-100 border aspect-[16/7] flex items-center justify-center">
+                        <div className="w-full rounded-xl overflow-hidden bg-gray-100 border-2 border-gray-200 aspect-video">
                             <SmartImage
                                 src={appwriteService.getOptimizedPreview(post.featuredImage, 'banner')}
                                 alt={post.title}
-                                style={{
-                                    width: "100%",
-                                    height: "100%",
-                                    objectFit: "cover",
-                                    transition: "opacity 0.5s",
-                                    opacity: imageLoaded ? 1 : 0
-                                }}
+                                className="w-full h-full object-cover transition-opacity duration-500"
+                                style={{ opacity: imageLoaded ? 1 : 0 }}
                                 onLoad={handleImageLoad}
                                 onError={handleImageError}
-                                dimensions={{ width: 600, height: 260 }}
+                                dimensions={{ width: 800, height: 450 }}
                                 lazy={false}
                                 retries={2}
                                 showErrorBadge={true}
@@ -198,29 +232,34 @@ export default function Post() {
                     )}
 
                     {/* Content */}
-                    <article className="prose prose-slate max-w-none bg-white rounded-xl p-6 shadow border">
+                    <article 
+                        ref={contentRef}
+                        className="prose prose-lg max-w-none bg-white rounded-xl p-6 md:p-8 shadow-sm border border-gray-100"
+                    >
                         {parse(post.content)}
                     </article>
 
                     {/* Actions */}
-                    <div className="flex flex-wrap gap-3 justify-between items-center">
+                    <div className="flex flex-wrap gap-4 justify-between items-center">
                         <Link
                             to="/all-posts"
-                            className="inline-flex items-center gap-2 text-blue-600 hover:underline font-medium"
+                            className="inline-flex items-center gap-2 text-emerald-600 hover:text-green-700 font-medium"
                         >
-                            <span className="text-lg">←</span>
-                            Back to All Posts
+                            <span>←</span>
+                            Back to Stories
                         </Link>
                         {isAuthor && (
-                            <div className="flex gap-2">
+                            <div className="flex gap-3">
                                 <Link to={`/edit-post/${post.$id}`}>
-                                    <Button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Edit</Button>
+                                    <Button className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg">
+                                        <FaEdit /> Edit
+                                    </Button>
                                 </Link>
                                 <Button
                                     onClick={() => setShowDeleteConfirm(true)}
-                                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
+                                    className="flex items-center gap-2 bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2.5 rounded-lg"
                                 >
-                                    Delete
+                                    <FaTrash /> Delete
                                 </Button>
                             </div>
                         )}
@@ -230,14 +269,14 @@ export default function Post() {
 
             {/* Delete Confirmation Modal */}
             {showDeleteConfirm && (
-                <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-xl p-6 max-w-sm w-full shadow-lg border">
-                        <h3 className="text-lg font-semibold mb-2">Delete this post?</h3>
-                        <p className="text-gray-600 mb-6 text-sm">This action cannot be undone.</p>
+                <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-xl p-6 max-w-md w-full shadow-lg border border-gray-100">
+                        <h3 className="text-xl font-semibold text-gray-800 mb-3">Delete this story?</h3>
+                        <p className="text-gray-600 mb-6">This action cannot be undone. The story will be permanently removed.</p>
                         <div className="flex gap-3">
                             <Button
                                 onClick={() => setShowDeleteConfirm(false)}
-                                className="flex-1 bg-black hover:bg-slate-500 text-black"
+                                className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700"
                             >
                                 Cancel
                             </Button>
@@ -246,7 +285,7 @@ export default function Post() {
                                     setShowDeleteConfirm(false);
                                     deletePost();
                                 }}
-                                className="flex-1 bg-red-500 hover:bg-red-600 text-white"
+                                className="flex-1 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white"
                             >
                                 Delete
                             </Button>
@@ -257,68 +296,3 @@ export default function Post() {
         </div>
     ) : null;
 }
-
-const styles = `
-@keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-}
-
-@keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slide-up {
-    from { 
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to { 
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fade-in-up {
-    from { 
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to { 
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes scale-in {
-    from { 
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    to { 
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-.animate-shimmer {
-    animation: shimmer 2s infinite;
-}
-
-.animate-fade-in {
-    animation: fade-in 0.8s ease-out;
-}
-
-.animate-slide-up {
-    animation: slide-up 0.8s ease-out 0.2s both;
-}
-
-.animate-fade-in-up {
-    animation: fade-in-up 0.8s ease-out 0.4s both;
-}
-
-.animate-scale-in {
-    animation: scale-in 0.3s ease-out;
-}
-`;
