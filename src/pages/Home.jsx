@@ -52,7 +52,7 @@ function Home() {
                 }
             } catch (err) {
                 console.error("Error fetching posts:", err);
-                setError("Failed to load content. Please try again.");
+                setError("Failed to load content. Please Reload the Page");
             } finally {
                 setLoading(false);
             }
@@ -173,9 +173,9 @@ function Home() {
                 <Container>
                     <EmptyState
                         icon="⚠️"
-                        title="Oops! Something went wrong"
+                        title="Oops! it must have been wind"
                         description={error}
-                        actionText="Try Again"
+                        actionText="Reload the Page"
                         actionLink="/"
                         className="py-20"
                     />

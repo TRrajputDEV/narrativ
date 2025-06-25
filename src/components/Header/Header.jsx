@@ -12,18 +12,14 @@ export default function Header() {
     const [open, setOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
 
-    // Close mobile menu when route changes
-    useEffect(() => {
-        setOpen(false)
-    }, [location])
+    // Close mobile menu on route change
+    useEffect(() => setOpen(false), [location])
 
-    // Add scroll effect to header
+    // Add shadow on scroll
     useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 10)
-        }
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
+        const onScroll = () => setScrolled(window.scrollY > 20)
+        window.addEventListener('scroll', onScroll)
+        return () => window.removeEventListener('scroll', onScroll)
     }, [])
 
     const navItems = [
@@ -35,162 +31,113 @@ export default function Header() {
     ]
 
     return (
-        <header className={`sticky top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-sm' : 'bg-white/80 backdrop-blur-sm'} border-b border-gray-100`}>
+        <header className={`fixed top-0 w-full z-50 bg-white transition-shadow duration-300 ${scrolled ? 'shadow-lg' : 'shadow-none'}`}>
             <Container>
-                <div className="flex items-center justify-between py-3">
+                <div className="flex items-center justify-between py-4">
                     {/* Logo */}
-                    <Link 
-                        to="/" 
-                        className="flex items-center gap-2 group"
-                    >
-                        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 w-8 h-8 rounded-lg flex items-center justify-center">
-                            <span className="text-white font-bold text-lg">N</span>
+                    <Link to="/" className="flex items-center space-x-2">
+                        <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-lg flex items-center justify-center">
+                            <span className="font-bold text-white text-lg">N</span>
                         </div>
-                        <span className="text-xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent group-hover:from-blue-700 group-hover:to-indigo-800 transition-all">
+                        <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-700">
                             Narrativ
                         </span>
                     </Link>
 
-                    {/* Desktop nav */}
-                    <nav className="hidden md:flex items-center gap-1">
+                    {/* Desktop Navigation */}
+                    <nav className="hidden md:flex items-center space-x-2">
                         {navItems.map(({ name, slug, auth, icon }) => {
                             if (auth === undefined || auth === authStatus) {
                                 const active = location.pathname === slug
                                 return (
                                     <button
-                                        key={name}
+                                        key={slug}
                                         onClick={() => navigate(slug)}
-                                        className={`relative flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-lg transition-all
-                                            ${active
-                                                ? 'bg-blue-50 text-blue-700'
-                                                : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-                                            }`}
+                                        className={`flex items-center space-x-1 px-4 py-2 text-sm font-medium rounded-lg transition-colors ease-in-out 
+                        ${active ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100'}`}
                                     >
-                                        <span className={`transition-colors ${active ? 'text-blue-600' : 'text-gray-400'}`}>
-                                            {icon}
-                                        </span>
-                                        {name}
+                                        <span className={`${active ? 'text-blue-600' : 'text-gray-400'}`}>{icon}</span>
+                                        <span>{name}</span>
                                     </button>
                                 )
                             }
                             return null
                         })}
+                        {authStatus && <LogoutBtn className="ml-2" />}
                         {authStatus && (
-                            <div className="ml-2">
-                                <LogoutBtn />
-                            </div>
+                            <Link to="/" className="ml-4 text-gray-700 hover:text-blue-600 font-medium">
+                                {userData?.name || 'Profile'}
+                            </Link>
                         )}
                     </nav>
 
-                    {/* User profile */}
-                    {authStatus && (
-                        <div className="hidden md:flex items-center">
-                            <Link 
-                                to="/" 
-                                className="flex items-center gap-2 group ml-4"
-                            >
-                                {/* <div className="bg-gray-200 border-2 border-dashed rounded-xl w-8 h-8" /> */}
-                                <span className="text-sm font-medium text-gray-700 group-hover:text-blue-600">
-                                    {userData?.name || 'Profile'}
-                                </span>
-                            </Link>
-                        </div>
-                    )}
-
-                    {/* Mobile menu button */}
+                    {/* Mobile Toggle Button */}
                     <button
-                        className="md:hidden p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
                         onClick={() => setOpen(!open)}
-                        aria-label={open ? "Close menu" : "Open menu"}
+                        className="md:hidden p-2 rounded-md focus:outline-none focus:ring"
+                        aria-label={open ? 'Close menu' : 'Open menu'}
                     >
-                        {open ? <X size={22} /> : <Menu size={22} />}
+                        {open ? <X size={24} /> : <Menu size={24} />}
                     </button>
                 </div>
-
-                {/* Mobile nav */}
-                {open && (
-                    <div className="fixed inset-0 z-40 md:hidden">
-                        {/* Backdrop */}
-                        <div 
-                            className="absolute inset-0 bg-black/30 backdrop-blur-sm"
-                            onClick={() => setOpen(false)}
-                        />
-                        
-                        {/* Menu panel */}
-                        <div className="absolute top-0 right-0 w-4/5 max-w-sm h-full bg-white shadow-xl transform transition-transform duration-300">
-                            <div className="flex justify-between items-center p-4 border-b border-gray-100">
-                                <Link 
-                                    to="/" 
-                                    className="flex items-center gap-2"
-                                    onClick={() => setOpen(false)}
-                                >
-                                    <div className="bg-gradient-to-r from-blue-600 to-indigo-700 w-7 h-7 rounded-lg flex items-center justify-center">
-                                        <span className="text-white font-bold text-sm">N</span>
-                                    </div>
-                                    <span className="text-lg font-extrabold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent">
-                                        Narrativ
-                                    </span>
-                                </Link>
-                                <button 
-                                    className="p-1.5 rounded-full bg-gray-100 hover:bg-gray-200"
-                                    onClick={() => setOpen(false)}
-                                >
-                                    <X size={20} />
-                                </button>
-                            </div>
-                            
-                            <nav className="py-4">
-                                {navItems.map(({ name, slug, auth, icon }) => {
-                                    if (auth === undefined || auth === authStatus) {
-                                        const active = location.pathname === slug
-                                        return (
-                                            <Link
-                                                key={name}
-                                                to={slug}
-                                                onClick={() => setOpen(false)}
-                                                className={`flex items-center gap-3 px-5 py-3.5 text-sm font-medium transition-colors
-                                                    ${active
-                                                        ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-600'
-                                                        : 'text-gray-700 hover:bg-gray-50'
-                                                    }`}
-                                            >
-                                                <span className={`${active ? 'text-blue-600' : 'text-gray-400'}`}>
-                                                    {icon}
-                                                </span>
-                                                {name}
-                                            </Link>
-                                        )
-                                    }
-                                    return null
-                                })}
-                                
-                                {authStatus && (
-                                    <div className="px-5 py-3.5">
-                                        <LogoutBtn 
-                                            className="w-full justify-center"
-                                            onClick={() => setOpen(false)}
-                                        />
-                                    </div>
-                                )}
-                                
-                                {authStatus && (
-                                    <Link
-                                        to="/"
-                                        onClick={() => setOpen(false)}
-                                        className="flex items-center gap-3 px-5 py-3.5 text-sm font-medium text-gray-700 hover:bg-gray-50 mt-2 border-t border-gray-100"
-                                    >
-                                        <div className="bg-gray-200 border-2 border-dashed rounded-xl w-8 h-8" />
-                                        <div>
-                                            <div className="font-medium">{userData?.name || 'Your Profile'}</div>
-                                            <div className="text-xs text-gray-500">View profile</div>
-                                        </div>
-                                    </Link>
-                                )}
-                            </nav>
-                        </div>
-                    </div>
-                )}
             </Container>
+
+            {/* Mobile Drawer */}
+            <div
+                className={`fixed inset-y-0 right-0 w-4/5 max-w-xs bg-white shadow-xl transform transition-transform duration-300 ease-in-out 
+        ${open ? 'translate-x-0' : 'translate-x-full'}`}
+            >
+                <div className="flex items-center justify-between p-4 border-b">
+                    <Link to="/" onClick={() => setOpen(false)} className="flex items-center space-x-2">
+                        <div className="w-7 h-7 bg-gradient-to-r from-blue-600 to-indigo-700 rounded flex items-center justify-center">
+                            <span className="text-white font-bold text-sm">N</span>
+                        </div>
+                        <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-700">
+                            Narrativ
+                        </span>
+                    </Link>
+                    <button onClick={() => setOpen(false)} className="p-2 rounded-md focus:outline-none focus:ring">
+                        <X size={20} />
+                    </button>
+                </div>
+                <nav className="flex flex-col p-4 space-y-1">
+                    {navItems.map(({ name, slug, auth, icon }) => {
+                        if (auth === undefined || auth === authStatus) {
+                            const active = location.pathname === slug
+                            return (
+                                <button
+                                    key={slug}
+                                    onClick={() => { navigate(slug); setOpen(false); }}
+                                    className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ease-in-out w-full text-left 
+                    ${active ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100'}`}
+                                >
+                                    <span className={`${active ? 'text-blue-600' : 'text-gray-400'}`}>{icon}</span>
+                                    <span>{name}</span>
+                                </button>
+                            )
+                        }
+                        return null
+                    })}
+                    {authStatus && (
+                        <>
+                            <LogoutBtn className="mt-2 w-full justify-center" onClick={() => setOpen(false)} />
+                            <Link
+                                to="/"
+                                onClick={() => setOpen(false)}
+                                className="flex items-center space-x-3 px-3 py-2 mt-4 border-t pt-4 text-gray-700 hover:bg-gray-100 rounded-lg"
+                            >
+                                <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-sm text-gray-500">
+                                    {userData?.name?.charAt(0) || 'U'}
+                                </div>
+                                <div>
+                                    <p className="font-medium">{userData?.name || 'Your Profile'}</p>
+                                    <p className="text-xs text-gray-500">View profile</p>
+                                </div>
+                            </Link>
+                        </>
+                    )}
+                </nav>
+            </div>
         </header>
     )
 }
