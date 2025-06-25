@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import appwriteService from "../appwrite/config";
 import { Container, PostCard, Button } from "../components";
 import { useSelector } from "react-redux";
@@ -10,56 +10,92 @@ function Home() {
     const [trendingPosts, setTrendingPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [retryCount, setRetryCount] = useState(0);
     const userData = useSelector((state) => state.auth.userData);
     const isAuthenticated = userData !== null;
 
+    const fetchPosts = useCallback(async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            
+            const allPosts = await appwriteService.getPosts();
+            if (allPosts && allPosts.documents) {
+                // Get user posts if logged in
+                if (isAuthenticated && userData) {
+                    const userPosts = allPosts.documents.filter(
+                        post => post.userId === userData.$id
+                    );
+                    setPosts(userPosts);
+                } else {
+                    setPosts([]);
+                }
+                
+                // Get featured posts (prioritize featured, fallback to recent)
+                const featured = allPosts.documents
+                    .filter(post => post.featured)
+                    .slice(0, 6);
+                
+                if (featured.length > 0) {
+                    setFeaturedPosts(featured);
+                } else {
+                    // If no featured posts, show most recent posts
+                    const recent = [...allPosts.documents]
+                        .sort((a, b) => new Date(b.$createdAt) - new Date(a.$createdAt))
+                        .slice(0, 6);
+                    setFeaturedPosts(recent);
+                }
+                
+                // Get trending posts (most viewed)
+                const trending = [...allPosts.documents]
+                    .sort((a, b) => (b.views || 0) - (a.views || 0))
+                    .slice(0, 4);
+                setTrendingPosts(trending);
+            } else {
+                // If no posts returned, set empty arrays
+                setPosts([]);
+                setFeaturedPosts([]);
+                setTrendingPosts([]);
+            }
+        } catch (err) {
+            console.error("Error fetching posts:", err);
+            
+            // More specific error handling
+            if (err.message?.includes('network') || err.message?.includes('fetch')) {
+                setError("Network error. Please check your connection and try again.");
+            } else if (err.code === 401 || err.message?.includes('unauthorized')) {
+                // Don't show error for auth issues, just retry
+                console.log("Authentication issue, retrying...");
+                if (retryCount < 2) {
+                    setRetryCount(prev => prev + 1);
+                    setTimeout(() => fetchPosts(), 1000);
+                    return;
+                }
+            } else {
+                setError("Failed to load content. Please try again.");
+            }
+        } finally {
+            setLoading(false);
+        }
+    }, [isAuthenticated, userData, retryCount]);
+
     useEffect(() => {
-        setLoading(true);
+        // Reset retry count when authentication state changes
+        setRetryCount(0);
         setError(null);
         
-        const fetchPosts = async () => {
-            try {
-                const allPosts = await appwriteService.getPosts();
-                if (allPosts && allPosts.documents) {
-                    // Get user posts if logged in
-                    if (isAuthenticated) {
-                        const userPosts = allPosts.documents.filter(
-                            post => post.userId === userData.$id
-                        );
-                        setPosts(userPosts);
-                    }
-                    
-                    // Get featured posts (prioritize featured, fallback to recent)
-                    const featured = allPosts.documents
-                        .filter(post => post.featured)
-                        .slice(0, 6);
-                    
-                    if (featured.length > 0) {
-                        setFeaturedPosts(featured);
-                    } else {
-                        // If no featured posts, show most recent posts
-                        const recent = [...allPosts.documents]
-                            .sort((a, b) => new Date(b.$createdAt) - new Date(a.$createdAt))
-                            .slice(0, 6);
-                        setFeaturedPosts(recent);
-                    }
-                    
-                    // Get trending posts (most viewed)
-                    const trending = [...allPosts.documents]
-                        .sort((a, b) => (b.views || 0) - (a.views || 0))
-                        .slice(0, 4);
-                    setTrendingPosts(trending);
-                }
-            } catch (err) {
-                console.error("Error fetching posts:", err);
-                setError("Failed to load content. Please Reload the Page");
-            } finally {
-                setLoading(false);
-            }
-        };
+        // Small delay to ensure auth state is stable
+        const timeoutId = setTimeout(() => {
+            fetchPosts();
+        }, 100);
 
-        fetchPosts();
+        return () => clearTimeout(timeoutId);
     }, [userData, isAuthenticated]);
+
+    const handleRetry = () => {
+        setRetryCount(0);
+        fetchPosts();
+    };
 
     const LoadingSkeleton = ({ count = 6, variant = "card" }) => (
         <div className={`grid gap-8 ${
@@ -116,7 +152,7 @@ function Home() {
 
     const StatsSection = () => (
         <div className="relative overflow-hidden">
-                            <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50"></div>
             <div className="relative px-8 py-16 md:py-20">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
@@ -171,14 +207,19 @@ function Home() {
         return (
             <div className="w-full min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
                 <Container>
-                    <EmptyState
-                        icon="⚠️"
-                        title="Oops! it must have been wind"
-                        description={error}
-                        actionText="Reload the Page"
-                        actionLink="/"
-                        className="py-20"
-                    />
+                    <div className="text-center py-20">
+                        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-red-50 to-orange-100 mb-6">
+                            <span className="text-4xl">⚠️</span>
+                        </div>
+                        <h3 className="text-2xl font-bold text-gray-800 mb-4">Something went wrong</h3>
+                        <p className="text-gray-600 max-w-md mx-auto mb-8 leading-relaxed">{error}</p>
+                        <Button 
+                            onClick={handleRetry}
+                            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                        >
+                            Try Again
+                        </Button>
+                    </div>
                 </Container>
             </div>
         );
