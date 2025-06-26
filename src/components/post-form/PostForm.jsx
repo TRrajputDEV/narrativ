@@ -217,24 +217,6 @@ export default function PostForm({ post }) {
                                     <p className="text-red-600 text-sm mt-1">{errors.title.message}</p>
                                 )}
                             </div>
-                            
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Slug
-                                </label>
-                                <Input
-                                    placeholder="post-url-slug"
-                                    className="w-full"
-                                    {...register("slug", { required: "Slug is required" })}
-                                    onInput={(e) => {
-                                        setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
-                                    }}
-                                />
-                                {errors.slug && (
-                                    <p className="text-red-600 text-sm mt-1">{errors.slug.message}</p>
-                                )}
-                            </div>
-                            
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
                                     Content
