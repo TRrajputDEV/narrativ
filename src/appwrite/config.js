@@ -16,15 +16,6 @@ export class Service {
 
     async createPost({ title, slug, content, featuredImage, status, userId }) {
         try {
-            console.log("Creating Post With:", {
-                title,
-                slug,
-                contentLength: content?.length || 0,
-                featuredImage,
-                status,
-                userId
-            });
-
             const response = await this.databases.createDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
@@ -37,8 +28,6 @@ export class Service {
                     userId,
                 }
             );
-
-            console.log("Post created successfully:", response.$id);
             return response;
         } catch (error) {
             console.error("Appwrite service :: createPost :: error", {
@@ -53,13 +42,6 @@ export class Service {
 
     async updatePost(slug, { title, content, featuredImage, status }) {
         try {
-            console.log("Updating Post:", {
-                slug,
-                title,
-                contentLength: content?.length || 0,
-                featuredImage,
-                status
-            });
 
             const response = await this.databases.updateDocument(
                 conf.appwriteDatabaseId,
@@ -73,7 +55,6 @@ export class Service {
                 }
             );
 
-            console.log("Post updated successfully:", response.$id);
             return response;
         } catch (error) {
             console.error("Appwrite service :: updatePost :: error", {
@@ -89,7 +70,7 @@ export class Service {
 
     async deletePost(slug) {
         try {
-            console.log("Deleting Post:", slug);
+
             
             await this.databases.deleteDocument(
                 conf.appwriteDatabaseId,
@@ -97,7 +78,6 @@ export class Service {
                 slug
             );
 
-            console.log("Post deleted successfully:", slug);
             return true;
         } catch (error) {
             console.error("Appwrite service :: deletePost :: error", {
@@ -112,20 +92,12 @@ export class Service {
 
     async getPost(slug) {
         try {
-            console.log("Fetching Post:", slug);
             
             const response = await this.databases.getDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 slug
-            );
-
-            console.log("Post fetched successfully:", {
-                id: response.$id,
-                title: response.title,
-                featuredImage: response.featuredImage
-            });
-            
+            );            
             return response;
         } catch (error) {
             console.error("Appwrite service :: getPost :: error", {
@@ -140,7 +112,7 @@ export class Service {
 
     async getPosts(queries = [Query.equal("status", "active")]) {
         try {
-            console.log("Fetching Posts with queries:", queries);
+
             
             const response = await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
@@ -148,10 +120,7 @@ export class Service {
                 queries
             );
 
-            console.log("Posts fetched successfully:", {
-                total: response.total,
-                count: response.documents.length
-            });
+            
             
             return response;
         } catch (error) {
@@ -172,11 +141,7 @@ export class Service {
                 throw new Error("No file provided");
             }
 
-            console.log("Uploading file:", {
-                name: file.name,
-                size: `${(file.size / 1024 / 1024).toFixed(2)}MB`,
-                type: file.type
-            });
+            
 
             const response = await this.bucket.createFile(
                 conf.appwriteBucketId,
@@ -184,11 +149,7 @@ export class Service {
                 file
             );
 
-            console.log("File uploaded successfully:", {
-                id: response.$id,
-                name: response.name,
-                size: `${(response.sizeOriginal / 1024 / 1024).toFixed(2)}MB`
-            });
+            
 
             return response;
         } catch (error) {
@@ -210,14 +171,14 @@ export class Service {
                 return true;
             }
 
-            console.log("Deleting file:", fileId);
+            
             
             await this.bucket.deleteFile(
                 conf.appwriteBucketId,
                 fileId
             );
 
-            console.log("File deleted successfully:", fileId);
+            
             return true;
         } catch (error) {
             console.error("Appwrite service :: deleteFile :: error", {
@@ -238,11 +199,7 @@ export class Service {
                 return null;
             }
 
-            console.log("Getting file preview:", {
-                fileId,
-                dimensions: `${width}x${height}`,
-                quality
-            });
+            
 
             const previewUrl = this.bucket.getFileView(
                 conf.appwriteBucketId,

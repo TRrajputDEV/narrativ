@@ -101,15 +101,15 @@ function Home() {
         }`}>
             {[...Array(count)].map((_, i) => (
                 <div key={i} className="animate-pulse">
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                        <div className="bg-gray-200 h-48 w-full" />
+                    <div className="bg-card rounded-xl shadow-lg border border-border overflow-hidden">
+                        <div className="bg-muted h-48 w-full" />
                         <div className="p-5">
-                            <div className="h-6 bg-gray-200 rounded w-3/4 mb-3"></div>
-                            <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-                            <div className="h-4 bg-gray-200 rounded w-5/6 mb-4"></div>
+                            <div className="h-6 bg-muted rounded w-3/4 mb-3"></div>
+                            <div className="h-4 bg-muted rounded w-full mb-2"></div>
+                            <div className="h-4 bg-muted rounded w-5/6 mb-4"></div>
                             <div className="flex justify-between">
-                                <div className="h-4 bg-gray-200 rounded w-20"></div>
-                                <div className="h-4 bg-gray-200 rounded w-16"></div>
+                                <div className="h-4 bg-muted rounded w-20"></div>
+                                <div className="h-4 bg-muted rounded w-16"></div>
                             </div>
                         </div>
                     </div>
@@ -124,15 +124,15 @@ function Home() {
         actionText, 
         actionLink
     }) => (
-        <div className="text-center py-12 border border-gray-200 rounded-2xl bg-white">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-emerald-50 to-green-50 mb-5">
-                <span className="text-2xl text-emerald-600">📝</span>
+        <div className="text-center py-12 border border-border rounded-2xl bg-card">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 mb-5">
+                <span className="text-2xl text-white">📝</span>
             </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-2">{title}</h3>
-            <p className="text-gray-600 max-w-md mx-auto mb-6">{description}</p>
+            <h3 className="text-xl font-semibold text-foreground mb-2 doto-button">{title}</h3>
+            <p className="text-muted-foreground max-w-md mx-auto mb-6">{description}</p>
             {actionText && actionLink && (
                 <Link to={actionLink}>
-                    <button className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-medium px-6 py-2.5 rounded-lg shadow-sm transition-all duration-300">
+                    <button className="bg-white hover:bg-white/90 text-black font-semibold px-6 py-2.5 rounded-lg shadow-lg transition-all duration-300 hover:scale-105 doto-button">
                         {actionText}
                     </button>
                 </Link>
@@ -142,17 +142,17 @@ function Home() {
 
     if (error) {
         return (
-            <div className="w-full min-h-screen bg-gradient-to-br from-gray-50 to-green-50 flex items-center justify-center">
+            <div className="w-full min-h-screen bg-background flex items-center justify-center animate-fadeIn">
                 <Container>
-                    <div className="text-center py-12 bg-white rounded-2xl border border-gray-100 shadow-sm max-w-md mx-auto">
-                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-red-50 to-orange-50 mb-5">
+                    <div className="text-center py-12 bg-card rounded-2xl border border-border shadow-lg max-w-md mx-auto">
+                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-500/20 mb-5">
                             <span className="text-2xl">⚠️</span>
                         </div>
-                        <h3 className="text-xl font-semibold text-gray-800 mb-2">Something went wrong</h3>
-                        <p className="text-gray-600 mb-6">{error}</p>
+                        <h3 className="text-xl font-semibold text-foreground mb-2 doto-button">Something went wrong</h3>
+                        <p className="text-muted-foreground mb-6">{error}</p>
                         <button 
                             onClick={handleRetry}
-                            className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-medium px-6 py-2.5 rounded-lg shadow-sm transition-all duration-300"
+                            className="bg-white hover:bg-white/90 text-black font-semibold px-6 py-2.5 rounded-lg shadow-lg transition-all duration-300 hover:scale-105 doto-button"
                         >
                             Try Again
                         </button>
@@ -163,19 +163,19 @@ function Home() {
     }
 
     return (
-        <div className="w-full min-h-screen bg-gradient-to-br from-gray-50 via-white to-green-50 ">
+        <div className="w-full min-h-screen bg-background animate-fadeIn">
             
             <Container className="py-12">
                 {/* Featured Stories */}
                 <div className="mb-16">
-                    <div className="flex items-center justify-between mb-8 ">
+                    <div className="flex items-center justify-between mb-8">
                         <div>
-                            <h2 className="text-2xl font-bold mb-2 bg-gradient-to-r from-emerald-600 to-green-700 bg-clip-text text-transparent p-4">
+                            <h2 className="text-2xl font-black mb-2 text-white doto-heading p-4">
                                 {featuredPosts.some(post => post.featured) 
                                     ? "Featured Stories" 
                                     : "Latest Stories"}
                             </h2>
-                            <p className="text-gray-600">
+                            <p className="text-muted-foreground">
                                 {featuredPosts.some(post => post.featured)
                                     ? "Handpicked narratives that captivate and inspire"
                                     : "Fresh stories from our community"}
@@ -183,7 +183,7 @@ function Home() {
                         </div>
                         <Link 
                             to="/all-posts" 
-                            className="hidden md:flex items-center gap-1 text-emerald-600 hover:text-green-700 font-medium transition-colors"
+                            className="hidden md:flex items-center gap-1 text-white hover:text-muted-foreground font-medium transition-colors"
                         >
                             View All <span>→</span>
                         </Link>
@@ -197,7 +197,7 @@ function Home() {
                                 <PostCard 
                                     key={post.$id} 
                                     {...post} 
-                                    className="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 hover:border-emerald-100" 
+                                    className="hover:shadow-2xl hover:shadow-white/5 transition-all duration-300 hover:border-white/20 hover:-translate-y-1" 
                                 />
                             ))}
                         </div>
@@ -213,7 +213,7 @@ function Home() {
                     <div className="md:hidden text-center mt-6">
                         <Link 
                             to="/all-posts" 
-                            className="inline-flex items-center gap-1 text-emerald-600 hover:text-green-700 font-medium"
+                            className="inline-flex items-center gap-1 text-white hover:text-muted-foreground font-medium"
                         >
                             View All <span>→</span>
                         </Link>
@@ -225,16 +225,16 @@ function Home() {
                     <div className="mb-16">
                         <div className="flex items-center justify-between mb-8">
                             <div>
-                                <h2 className="text-2xl font-bold mb-2 bg-gradient-to-r from-emerald-600 to-green-700 bg-clip-text text-transparent">
+                                <h2 className="text-2xl font-black mb-2 text-white doto-heading">
                                     Trending Stories
                                 </h2>
-                                <p className="text-gray-600">
+                                <p className="text-muted-foreground">
                                     Most loved stories by our community
                                 </p>
                             </div>
                             <Link 
                                 to="/all-posts" 
-                                className="hidden md:flex items-center gap-1 text-emerald-600 hover:text-green-700 font-medium transition-colors"
+                                className="hidden md:flex items-center gap-1 text-white hover:text-muted-foreground font-medium transition-colors"
                             >
                                 See More <span>→</span>
                             </Link>
@@ -246,7 +246,7 @@ function Home() {
                                     key={post.$id} 
                                     {...post} 
                                     compact={true}
-                                    className="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 hover:border-emerald-100" 
+                                    className="hover:shadow-2xl hover:shadow-white/5 transition-all duration-300 hover:border-white/20 hover:-translate-y-1" 
                                 />
                             ))}
                         </div>
@@ -258,16 +258,16 @@ function Home() {
                     <div className="mb-12">
                         <div className="flex items-center justify-between mb-8">
                             <div>
-                                <h2 className="text-2xl font-bold mb-2 bg-gradient-to-r from-emerald-600 to-green-700 bg-clip-text text-transparent">
+                                <h2 className="text-2xl font-black mb-2 text-white doto-heading">
                                     Your Stories
                                 </h2>
-                                <p className="text-gray-600">
+                                <p className="text-muted-foreground">
                                     Your published narratives
                                 </p>
                             </div>
                             <Link 
                                 to="/add-post" 
-                                className="hidden md:flex items-center gap-1 text-emerald-600 hover:text-green-700 font-medium transition-colors"
+                                className="hidden md:flex items-center gap-1 text-white hover:text-muted-foreground font-medium transition-colors"
                             >
                                 + New Story
                             </Link>
@@ -281,7 +281,7 @@ function Home() {
                                     <PostCard 
                                         key={post.$id} 
                                         {...post} 
-                                        className="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 hover:border-emerald-100" 
+                                        className="hover:shadow-2xl hover:shadow-white/5 transition-all duration-300 hover:border-white/20 hover:-translate-y-1" 
                                     />
                                 ))}
                             </div>

@@ -115,30 +115,30 @@ export default function Post() {
     // Loading State
     if (loading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
+            <div className="min-h-screen bg-background animate-fadeIn">
                 <Container>
                     <div className="py-8 md:py-16">
                         {/* Title Skeleton */}
                         <div className="max-w-3xl mx-auto mb-8">
-                            <div className="h-10 bg-gray-200 rounded-xl mb-6 w-3/4 mx-auto"></div>
-                            <div className="h-4 bg-gray-200 rounded-xl mb-4 w-1/2 mx-auto"></div>
+                            <div className="h-10 bg-muted rounded-xl mb-6 w-3/4 mx-auto animate-pulse"></div>
+                            <div className="h-4 bg-muted rounded-xl mb-4 w-1/2 mx-auto animate-pulse"></div>
                         </div>
 
                         {/* Featured Image Skeleton */}
-                        <div className="aspect-video bg-gray-200 rounded-xl mb-12"></div>
+                        <div className="aspect-video bg-muted rounded-xl mb-12 animate-pulse"></div>
 
                         {/* Content Skeleton */}
                         <div className="max-w-3xl mx-auto space-y-4">
                             {[...Array(8)].map((_, i) => (
                                 <div 
                                     key={i} 
-                                    className="h-4 bg-gray-200 rounded-xl"
+                                    className="h-4 bg-muted rounded-xl animate-pulse"
                                     style={{width: `${Math.random() * 40 + 60}%`}}
                                 ></div>
                             ))}
-                            <div className="h-4 bg-gray-200 rounded-xl w-3/4"></div>
-                            <div className="h-4 bg-gray-200 rounded-xl w-full"></div>
-                            <div className="h-4 bg-gray-200 rounded-xl w-5/6"></div>
+                            <div className="h-4 bg-muted rounded-xl w-3/4 animate-pulse"></div>
+                            <div className="h-4 bg-muted rounded-xl w-full animate-pulse"></div>
+                            <div className="h-4 bg-muted rounded-xl w-5/6 animate-pulse"></div>
                         </div>
                     </div>
                 </Container>
@@ -149,23 +149,23 @@ export default function Post() {
     // Error State
     if (error) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50 flex items-center justify-center">
+            <div className="min-h-screen bg-background flex items-center justify-center animate-fadeIn">
                 <Container>
                     <div className="text-center max-w-md mx-auto">
                         <div className="mb-8">
-                            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-red-50 to-orange-50 mb-5">
+                            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-500/20 mb-5">
                                 <span className="text-2xl">⚠️</span>
                             </div>
                         </div>
-                        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
-                            <h1 className="text-2xl font-bold text-gray-800 mb-4">
+                        <div className="bg-card rounded-2xl border border-border shadow-lg p-8">
+                            <h1 className="text-2xl font-black text-foreground mb-4 doto-heading">
                                 Oops! Something went wrong
                             </h1>
-                            <p className="text-gray-600 mb-6">{error}</p>
-                            <p className="text-gray-500 mb-8">Redirecting to home page...</p>
+                            <p className="text-muted-foreground mb-6">{error}</p>
+                            <p className="text-muted-foreground mb-8">Redirecting to home page...</p>
                             <Button 
                                 onClick={() => navigate("/")} 
-                                className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white px-6 py-3 rounded-lg"
+                                className="bg-white hover:bg-white/90 text-black px-6 py-3 rounded-lg hover:scale-105 doto-button"
                             >
                                 Take Me Home
                             </Button>
@@ -177,12 +177,12 @@ export default function Post() {
     }
 
     return post ? (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-green-50">
+        <div className="min-h-screen bg-background animate-fadeIn">
             {/* Scroll to top button */}
             {showScrollTop && (
                 <button 
                     onClick={scrollToTop}
-                    className="fixed bottom-6 right-6 z-50 w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                    className="fixed bottom-6 right-6 z-50 w-12 h-12 flex items-center justify-center rounded-full bg-white text-black shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
                     aria-label="Scroll to top"
                 >
                     <FaArrowUp />
@@ -193,11 +193,11 @@ export default function Post() {
                 <div className="py-10 grid gap-10 max-w-4xl mx-auto">
                     {/* Title & Meta */}
                     <div className="grid gap-4 text-center">
-                        <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
+                        <h1 className="text-3xl md:text-4xl font-black text-white doto-heading">
                             {post.title}
                         </h1>
                         
-                        <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-600">
+                        <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
                             <span>
                                 {new Date(post.$createdAt).toLocaleDateString('en-US', {
                                     year: 'numeric',
@@ -206,7 +206,7 @@ export default function Post() {
                                 })}
                             </span>
                             {post.$updatedAt !== post.$createdAt && (
-                                <span className="text-emerald-600 flex items-center">
+                                <span className="text-white flex items-center">
                                     <span className="mr-1">•</span> Updated {new Date(post.$updatedAt).toLocaleDateString()}
                                 </span>
                             )}
@@ -215,7 +215,7 @@ export default function Post() {
 
                     {/* Featured Image */}
                     {post.featuredImage && (
-                        <div className="w-full rounded-xl overflow-hidden bg-gray-100 border-2 border-gray-200 aspect-video">
+                        <div className="w-full rounded-xl overflow-hidden bg-muted border-2 border-border aspect-video shadow-lg">
                             <SmartImage
                                 src={appwriteService.getOptimizedPreview(post.featuredImage, 'banner')}
                                 alt={post.title}
@@ -234,7 +234,7 @@ export default function Post() {
                     {/* Content */}
                     <article 
                         ref={contentRef}
-                        className="prose prose-lg max-w-none bg-white rounded-xl p-6 md:p-8 shadow-sm border border-gray-100"
+                        className="prose prose-lg max-w-none bg-card rounded-xl p-6 md:p-8 shadow-lg border border-border"
                     >
                         {parse(post.content)}
                     </article>
@@ -243,7 +243,7 @@ export default function Post() {
                     <div className="flex flex-wrap gap-4 justify-between items-center">
                         <Link
                             to="/all-posts"
-                            className="inline-flex items-center gap-2 text-emerald-600 hover:text-green-700 font-medium"
+                            className="inline-flex items-center gap-2 text-white hover:text-muted-foreground font-medium transition-colors"
                         >
                             <span>←</span>
                             Back to Stories
@@ -251,13 +251,13 @@ export default function Post() {
                         {isAuthor && (
                             <div className="flex gap-3">
                                 <Link to={`/edit-post/${post.$id}`}>
-                                    <Button className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg">
+                                    <Button className="flex items-center gap-2 bg-card hover:bg-muted text-foreground border border-border px-4 py-2.5 rounded-lg hover:scale-105 doto-button">
                                         <FaEdit /> Edit
                                     </Button>
                                 </Link>
                                 <Button
                                     onClick={() => setShowDeleteConfirm(true)}
-                                    className="flex items-center gap-2 bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2.5 rounded-lg"
+                                    className="flex items-center gap-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 px-4 py-2.5 rounded-lg hover:scale-105 doto-button"
                                 >
                                     <FaTrash /> Delete
                                 </Button>
@@ -269,14 +269,14 @@ export default function Post() {
 
             {/* Delete Confirmation Modal */}
             {showDeleteConfirm && (
-                <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-xl p-6 max-w-md w-full shadow-lg border border-gray-100">
-                        <h3 className="text-xl font-semibold text-gray-800 mb-3">Delete this story?</h3>
-                        <p className="text-gray-600 mb-6">This action cannot be undone. The story will be permanently removed.</p>
+                <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+                    <div className="bg-card rounded-xl p-6 max-w-md w-full shadow-2xl border border-border">
+                        <h3 className="text-xl font-black text-foreground mb-3 doto-heading">Delete this story?</h3>
+                        <p className="text-muted-foreground mb-6">This action cannot be undone. The story will be permanently removed.</p>
                         <div className="flex gap-3">
                             <Button
                                 onClick={() => setShowDeleteConfirm(false)}
-                                className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700"
+                                className="flex-1 bg-muted hover:bg-border text-foreground doto-button"
                             >
                                 Cancel
                             </Button>
@@ -285,7 +285,7 @@ export default function Post() {
                                     setShowDeleteConfirm(false);
                                     deletePost();
                                 }}
-                                className="flex-1 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white"
+                                className="flex-1 bg-red-500 hover:bg-red-600 text-white doto-button"
                             >
                                 Delete
                             </Button>

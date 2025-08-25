@@ -13,7 +13,7 @@ const Input = React.forwardRef(function Input({
         <div className="w-full mb-4">
             {label && (
                 <label
-                    className="block mb-1 pl-1 text-sm font-medium text-gray-700"
+                    className="block mb-1 pl-1 text-sm font-medium text-muted-foreground"
                     htmlFor={id}
                 >
                     {label}
@@ -23,12 +23,13 @@ const Input = React.forwardRef(function Input({
                 type={type}
                 className={`
                     px-4 py-2 rounded-lg 
-                    bg-white text-gray-900 
+                    bg-card text-foreground 
                     outline-none border w-full
-                    transition duration-200
-                    focus:bg-gray-50 focus:border-blue-500
-                    ${error ? 'border-red-500 focus:border-red-500' : 'border-gray-300'}
-                    shadow-sm
+                    transition-all duration-300
+                    focus:bg-muted focus:border-white
+                    placeholder:text-muted-foreground
+                    ${error ? 'border-red-400 focus:border-red-400' : 'border-border'}
+                    shadow-sm hover:border-white/30
                     ${className}
                 `}
                 ref={ref}
@@ -38,12 +39,12 @@ const Input = React.forwardRef(function Input({
                 aria-describedby={error ? `${id}-error` : helperText ? `${id}-helper` : undefined}
             />
             {helperText && !error && (
-                <p id={`${id}-helper`} className="mt-1 text-xs text-gray-500 pl-1">
+                <p id={`${id}-helper`} className="mt-1 text-xs text-muted-foreground pl-1">
                     {helperText}
                 </p>
             )}
             {error && (
-                <p id={`${id}-error`} className="mt-1 text-xs text-red-600 pl-1">
+                <p id={`${id}-error`} className="mt-1 text-xs text-red-400 pl-1">
                     {error}
                 </p>
             )}

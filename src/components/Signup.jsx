@@ -43,7 +43,7 @@ function Signup() {
         helpText = ""
     }) => (
         <div className="space-y-2">
-            <label htmlFor={id} className="block text-sm font-semibold text-gray-700">
+            <label htmlFor={id} className="block text-sm font-semibold text-muted-foreground">
                 {label}
             </label>
             <div className="relative">
@@ -53,8 +53,8 @@ function Signup() {
                     placeholder={placeholder}
                     className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 ${
                         error 
-                            ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-500/20' 
-                            : 'border-gray-200 bg-gray-50 focus:border-emerald-500 focus:ring-emerald-500/20 hover:border-gray-300'
+                            ? 'border-red-400 bg-red-500/10 focus:border-red-400 focus:ring-red-500/20' 
+                            : 'border-border bg-card focus:border-white focus:ring-white/20 hover:border-white/30'
                     } focus:outline-none focus:ring-2`}
                     {...register(id, validation)}
                 />
@@ -62,7 +62,7 @@ function Signup() {
                     <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-emerald-600 transition-colors"
+                        className="absolute inset-y-0 right-0 pr-4 flex items-center text-muted-foreground hover:text-white transition-colors"
                     >
                         {showPassword ? (
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,7 +78,7 @@ function Signup() {
                 )}
             </div>
             {error && (
-                <p className="text-sm text-red-600 flex items-center font-medium">
+                <p className="text-sm text-red-400 flex items-center font-medium">
                     <svg className="w-4 h-4 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -86,7 +86,7 @@ function Signup() {
                 </p>
             )}
             {helpText && !error && (
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                     {helpText}
                 </p>
             )}
@@ -94,27 +94,27 @@ function Signup() {
     )
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-green-50 flex items-center justify-center p-4">
+        <div className="min-h-screen bg-background flex items-center justify-center p-4 animate-fadeIn">
             <div className="relative w-full max-w-md">
                 {/* Main Card */}
-                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                <div className="bg-card rounded-2xl shadow-2xl border border-border overflow-hidden">
                     {/* Header Section */}
-                    <div className="bg-gradient-to-br from-emerald-700 to-green-800 px-8 py-12 text-center">
+                    <div className="bg-gradient-to-br from-black to-muted px-8 py-12 text-center border-b border-border">
                         {/* Logo */}
                         <div className="flex justify-center mb-6">
-                            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg">
-                                <div className="w-12 h-12 bg-gradient-to-br from-emerald-600 to-green-700 rounded-xl flex items-center justify-center">
-                                    <span className="text-white font-bold text-xl">N</span>
+                            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-xl hover:scale-105 transition-transform duration-300">
+                                <div className="w-12 h-12 bg-gradient-to-br from-black to-muted rounded-xl flex items-center justify-center">
+                                    <span className="text-white font-black text-xl doto-bold">N</span>
                                 </div>
                             </div>
                         </div>
                         
                         {/* Welcome Text */}
                         <div className="space-y-2">
-                            <h1 className="text-3xl font-bold text-white">
+                            <h1 className="text-3xl font-black text-white doto-heading">
                                 Create Your Account
                             </h1>
-                            <p className="text-emerald-100 text-lg">
+                            <p className="text-muted-foreground text-lg">
                                 Start your storytelling journey
                             </p>
                         </div>
@@ -123,16 +123,16 @@ function Signup() {
                     {/* Form Section */}
                     <div className="px-6 py-8 sm:px-8 sm:py-10">
                         {error && (
-                            <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4 flex items-start">
+                            <div className="mb-6 bg-red-500/10 border border-red-500/20 rounded-lg p-4 flex items-start">
                                 <div className="flex-shrink-0 mr-3">
-                                    <div className="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center">
-                                        <svg className="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div className="w-6 h-6 bg-red-500/20 rounded-full flex items-center justify-center">
+                                        <svg className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     </div>
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-red-800 font-medium">{error}</p>
+                                    <p className="text-red-400 font-medium">{error}</p>
                                 </div>
                             </div>
                         )}
@@ -192,13 +192,12 @@ function Signup() {
                             <div className="pt-2">
                                 <Button
                                     type="submit"
-                                    className="w-full py-3.5 font-medium rounded-lg shadow-sm transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
-                                    gradient={true}
+                                    className="w-full py-3.5 font-semibold rounded-lg shadow-lg transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed doto-button hover:scale-105"
                                     disabled={isLoading}
                                 >
                                     {isLoading ? (
                                         <div className="flex items-center justify-center">
-                                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-3"></div>
+                                            <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin mr-3"></div>
                                             Creating account...
                                         </div>
                                     ) : (
@@ -215,11 +214,11 @@ function Signup() {
                         
                         {/* Sign In Link */}
                         <div className="text-center mt-8">
-                            <p className="text-gray-600 text-sm">
+                            <p className="text-muted-foreground text-sm">
                                 Already have an account?{' '}
                                 <Link
                                     to="/login"
-                                    className="font-semibold text-emerald-600 hover:text-green-700 transition-colors duration-200 hover:underline"
+                                    className="font-semibold text-white hover:text-muted-foreground transition-colors duration-200 hover:underline"
                                 >
                                     Sign in
                                 </Link>
@@ -230,15 +229,15 @@ function Signup() {
                 
                 {/* Trust Indicators */}
                 <div className="mt-6 text-center">
-                    <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-500">
+                    <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
                         <div className="flex items-center">
-                            <svg className="w-4 h-4 mr-1.5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                            <svg className="w-4 h-4 mr-1.5 text-white" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
                             </svg>
                             Secure Registration
                         </div>
                         <div className="flex items-center">
-                            <svg className="w-4 h-4 mr-1.5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                            <svg className="w-4 h-4 mr-1.5 text-white" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                             </svg>
                             Trusted Platform

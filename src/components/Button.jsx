@@ -3,22 +3,23 @@ import React from 'react'
 function Button({
     children,
     type = 'button',
-    bgColor = 'bg-blue-600',
-    textColor = 'text-white',
+    bgColor = 'bg-white',
+    textColor = 'text-black',
     className = '',
-    hoverBgColor = 'hover:bg-blue-700',
-    focusRing = 'focus:ring-2 focus:ring-blue-400 focus:outline-none',
-    shadow = 'shadow-md',
-    transition = 'transition duration-200',
+    hoverBgColor = 'hover:bg-white/90',
+    focusRing = 'focus:ring-2 focus:ring-white/20 focus:outline-none',
+    shadow = 'shadow-lg',
+    transition = 'transition-all duration-300',
     ...props
 }) {
     return (
         <button
             type={type}
             className={`
-                px-5 py-2.5 rounded-lg font-semibold
+                px-5 py-2.5 rounded-lg font-semibold doto-button
                 ${bgColor} ${textColor}
                 ${hoverBgColor} ${focusRing} ${shadow} ${transition}
+                hover:scale-105 hover:shadow-white/20
                 ${className}
             `}
             {...props}
