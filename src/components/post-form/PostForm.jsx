@@ -192,65 +192,71 @@ export default function PostForm({ post }) {
     }, [watch, slugTransform, setValue]);
 
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-            <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-emerald-600 to-green-700 bg-clip-text text-transparent">
+        <div className="bg-card rounded-2xl shadow-lg border border-border p-4 sm:p-6 lg:p-8 animate-fadeIn max-w-7xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl font-black mb-6 sm:mb-8 text-white doto-heading text-center sm:text-left">
                 {post ? "Edit Story" : "Create New Story"}
             </h2>
             
-            <form onSubmit={handleSubmit(submit)} className="flex flex-wrap gap-6 ">
-                <div className="flex flex-row">
-                <div className="w-full lg:w-2/3">
-                    <div className="bg-gray-50 rounded-xl p-5 mb-6">
-                        <h3 className="font-semibold text-gray-800 mb-4">Story Details</h3>
+            <form onSubmit={handleSubmit(submit)} className="space-y-6 lg:space-y-0 lg:flex lg:gap-8">
+                {/* Main Content Section */}
+                <div className="w-full lg:w-2/3 space-y-6">
+                    <div className="bg-muted rounded-xl p-4 sm:p-6 border border-border/50">
+                        <h3 className="font-semibold text-foreground mb-4 sm:mb-6 doto-button text-lg">Story Details</h3>
                         
-                        <div className="space-y-5">
+                        <div className="space-y-4 sm:space-y-6">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                <label className="block text-sm font-medium text-muted-foreground mb-2">
                                     Title
                                 </label>
                                 <Input
                                     placeholder="Enter your post title"
-                                    className="w-full"
+                                    className="w-full text-base"
                                     {...register("title", { required: "Title is required" })}
                                 />
                                 {errors.title && (
-                                    <p className="text-red-600 text-sm mt-1">{errors.title.message}</p>
+                                    <p className="text-red-400 text-sm mt-2">{errors.title.message}</p>
                                 )}
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                <label className="block text-sm font-medium text-muted-foreground mb-2">
                                     Content
                                 </label>
-                                <RTE 
-                                    name="content" 
-                                    control={control} 
-                                    defaultValue={getValues("content")} 
-                                    className="border border-gray-200 rounded-lg overflow-hidden"
-                                />
+                                <div className="border border-border rounded-lg overflow-hidden">
+                                    <RTE 
+                                        name="content" 
+                                        control={control} 
+                                        defaultValue={getValues("content")} 
+                                    />
+                                </div>
                                 {errors.content && (
-                                    <p className="text-red-600 text-sm mt-1">{errors.content.message}</p>
+                                    <p className="text-red-400 text-sm mt-2">{errors.content.message}</p>
                                 )}
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <div className="w-full lg:w-1/3">
-                    <div className="bg-gray-50 rounded-xl p-5 mb-6">
-                        <h3 className="font-semibold text-gray-800 mb-4">Publishing Options</h3>
+                {/* Sidebar Section */}
+                <div className="w-full lg:w-1/3 space-y-6">
+                    <div className="bg-muted rounded-xl p-4 sm:p-6 border border-border/50">
+                        <h3 className="font-semibold text-foreground mb-4 sm:mb-6 doto-button text-lg">Publishing Options</h3>
                         
-                        <div className="space-y-5">
+                        <div className="space-y-4 sm:space-y-6">
+                            {/* Featured Image Upload */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                <label className="block text-sm font-medium text-muted-foreground mb-2">
                                     Featured Image
                                 </label>
                                 <div className="relative">
-                                    <label className="block w-full bg-white border border-gray-200 rounded-lg px-4 py-3 cursor-pointer hover:border-emerald-300 transition-colors">
-                                        <div className="flex items-center justify-center gap-2 text-gray-600">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <label className="block w-full bg-card border-2 border-dashed border-border rounded-lg px-4 py-6 cursor-pointer hover:border-primary/50 transition-colors text-center group">
+                                        <div className="flex flex-col items-center justify-center gap-3 text-muted-foreground group-hover:text-foreground">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                             </svg>
-                                            <span>Choose image...</span>
+                                            <div>
+                                                <span className="font-medium">Choose image</span>
+                                                <p className="text-xs mt-1">PNG, JPG, GIF up to 2MB</p>
+                                            </div>
                                         </div>
                                         <input
                                             type="file"
@@ -264,25 +270,25 @@ export default function PostForm({ post }) {
                                     </label>
                                     
                                     {fileError && (
-                                        <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2 rounded mt-2 text-sm">
+                                        <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-3 py-2 rounded mt-2 text-sm">
                                             ⚠️ {fileError}
                                         </div>
                                     )}
                                     
                                     {errors.image && (
-                                        <p className="text-red-600 text-sm mt-1">{errors.image.message}</p>
+                                        <p className="text-red-400 text-sm mt-2">{errors.image.message}</p>
                                     )}
                                 </div>
                             </div>
                             
                             {/* Image Preview */}
-                            {(previewImage || post) && (
+                            {(previewImage || post?.featuredImage) && (
                                 <div className="w-full">
-                                    <div className="relative rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
+                                    <div className="relative rounded-lg overflow-hidden border border-border bg-muted aspect-video">
                                         <img
                                             src={previewImage || appwriteService.getFilePreview(post.featuredImage)}
                                             alt={post?.title || "Preview"}
-                                            className="w-full h-48 object-cover"
+                                            className="w-full h-full object-cover"
                                             onError={(e) => {
                                                 console.error("Preview image failed to load");
                                                 e.target.style.display = 'none';
@@ -290,15 +296,16 @@ export default function PostForm({ post }) {
                                         />
                                         {previewImage && (
                                             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3">
-                                                <span className="text-white text-sm">New image preview</span>
+                                                <span className="text-white text-sm font-medium">New image preview</span>
                                             </div>
                                         )}
                                     </div>
                                 </div>
                             )}
                             
+                            {/* Status Select */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                <label className="block text-sm font-medium text-muted-foreground mb-2">
                                     Status
                                 </label>
                                 <Select
@@ -311,13 +318,13 @@ export default function PostForm({ post }) {
                             {/* Upload Progress */}
                             {uploadProgress > 0 && uploadProgress < 100 && (
                                 <div className="pt-2">
-                                    <div className="flex justify-between text-sm mb-1">
-                                        <span>Uploading image...</span>
-                                        <span>{uploadProgress}%</span>
+                                    <div className="flex justify-between text-sm mb-2">
+                                        <span className="text-muted-foreground">Uploading image...</span>
+                                        <span className="text-foreground font-medium">{uploadProgress}%</span>
                                     </div>
-                                    <div className="bg-gray-200 rounded-full h-2">
+                                    <div className="bg-border rounded-full h-2 overflow-hidden">
                                         <div 
-                                            className="bg-gradient-to-r from-emerald-500 to-green-600 h-2 rounded-full transition-all duration-300"
+                                            className="bg-white h-full rounded-full transition-all duration-300 animate-pulse"
                                             style={{ width: `${uploadProgress}%` }}
                                         ></div>
                                     </div>
@@ -326,15 +333,15 @@ export default function PostForm({ post }) {
                         </div>
                     </div>
                     
+                    {/* Submit Button */}
                     <Button 
                         type="submit" 
-                        className="w-full disabled:opacity-50 disabled:cursor-not-allowed py-3.5 text-lg"
+                        className="w-full disabled:opacity-50 disabled:cursor-not-allowed py-4 text-base sm:text-lg doto-button font-bold"
                         disabled={isSubmitting}
-                        gradient={true}
                     >
                         {isSubmitting ? (
-                            <div className="flex items-center justify-center gap-2">
-                                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <div className="flex items-center justify-center gap-3">
+                                <svg className="animate-spin h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                 </svg>
@@ -348,11 +355,10 @@ export default function PostForm({ post }) {
                     </Button>
                     
                     {/* File size tip */}
-                    <p className="text-sm text-gray-500 mt-4 flex items-start">
-                        <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 mr-2 flex-shrink-0 mt-0.5">💡</span>
-                        Files over 1MB will be automatically compressed. Max size: 2MB
-                    </p>
-                </div>
+                    <div className="text-sm text-muted-foreground flex items-start gap-3 p-3 rounded-lg bg-white/5">
+                        <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-white/10 text-white flex-shrink-0 mt-0.5">💡</span>
+                        <p>Files over 1MB will be automatically compressed. Max size: 2MB</p>
+                    </div>
                 </div>
             </form>
         </div>

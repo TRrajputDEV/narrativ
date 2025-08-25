@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Container, LogoutBtn } from '../index'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { Menu, X, Home, FileText, PlusSquare, LogIn, UserPlus, ChevronRight } from 'lucide-react'
+import { Menu, X, Home, FileText, PlusSquare, LogIn, UserPlus, ChevronRight, ExternalLink } from 'lucide-react'
 
 export default function Header() {
     const authStatus = useSelector((state) => state.auth.status)
@@ -25,42 +25,55 @@ export default function Header() {
     return (
         <>
             {/* Top Header Bar - Mobile Only */}
-            <header className="md:hidden fixed top-0 w-full z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
+            <header className="md:hidden fixed top-0 w-full z-50 bg-background/95 backdrop-blur-sm border-b border-border">
                 <div className="flex items-center justify-between px-4 py-3">
                     <Link to="/" className="flex items-center space-x-2">
-                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center shadow-sm">
-                            <span className="font-bold text-white text-lg">N</span>
+                        <div className="w-8 h-8 bg-white rounded-xl flex items-center justify-center shadow-sm">
+                            <span className="font-black text-black text-lg doto-bold">P</span>
                         </div>
-                        <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-green-700">
+                        <span className="text-xl font-black text-white doto-heading">
                             Narrativ
                         </span>
                     </Link>
                     
                     <button
                         onClick={() => setSidebarOpen(!sidebarOpen)}
-                        className="p-2 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+                        className="p-2 rounded-xl bg-card hover:bg-muted transition-colors"
                         aria-label={sidebarOpen ? 'Close menu' : 'Open menu'}
                     >
-                        {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
+                        {sidebarOpen ? <X size={20} className="text-foreground" /> : <Menu size={20} className="text-foreground" />}
                     </button>
                 </div>
             </header>
 
             {/* Desktop Sidebar */}
-            <aside className="hidden md:flex fixed left-0 top-0 h-full w-64 bg-white border-r border-gray-100 flex-col z-40">
+            <aside className="hidden md:flex fixed left-0 top-0 h-full w-64 bg-background border-r border-border flex-col z-40">
                 {/* Logo Section */}
-                <div className="p-6 border-b border-gray-50">
+                <div className="p-6 border-b border-border/50">
                     <Link to="/" className="flex items-center space-x-3 group">
-                        <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-200">
-                            <span className="font-bold text-white text-xl">N</span>
+                        <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-white/20 transition-shadow duration-200">
+                            <span className="font-black text-black text-xl doto-bold">P</span>
                         </div>
                         <div>
-                            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-green-700">
+                            <span className="text-2xl font-black text-white doto-heading">
                                 Narrativ
                             </span>
-                            <p className="text-xs text-gray-500 -mt-1">Premium Writing</p>
+                            <p className="text-xs text-muted-foreground -mt-1">Writing's Platform</p>
                         </div>
                     </Link>
+                    
+                    {/* Website Link */}
+                    <div className="mt-4">
+                        <a 
+                            href="https://watchpixels.onrender.com/" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-xs text-muted-foreground hover:text-white transition-colors group"
+                        >
+                            <ExternalLink size={12} />
+                            <span>Check out Pixels</span>
+                        </a>
+                    </div>
                 </div>
 
                 {/* Navigation */}
@@ -72,17 +85,17 @@ export default function Header() {
                                 <button
                                     key={slug}
                                     onClick={() => navigate(slug)}
-                                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group
+                                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group doto-button
                                         ${active 
-                                            ? 'bg-gradient-to-r from-emerald-50 to-green-50 text-emerald-700 shadow-sm border border-emerald-100' 
-                                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                                            ? 'bg-white/10 text-white shadow-sm border border-white/20' 
+                                            : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                                         }`}
                                 >
-                                    <span className={`transition-colors ${active ? 'text-emerald-600' : 'text-gray-400 group-hover:text-gray-600'}`}>
+                                    <span className={`transition-colors ${active ? 'text-white' : 'text-muted-foreground group-hover:text-foreground'}`}>
                                         {icon}
                                     </span>
                                     <span className="flex-1 text-left">{name}</span>
-                                    {active && <ChevronRight size={16} className="text-emerald-500" />}
+                                    {active && <ChevronRight size={16} className="text-white" />}
                                 </button>
                             )
                         }
@@ -92,17 +105,17 @@ export default function Header() {
 
                 {/* User Section */}
                 {authStatus && (
-                    <div className="p-4 border-t border-gray-50">
-                        <div className="flex items-center space-x-3 p-3 rounded-xl bg-gradient-to-r from-gray-50 to-green-50 mb-3">
-                            <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-green-500 rounded-full flex items-center justify-center text-white font-semibold shadow-sm">
+                    <div className="p-4 border-t border-border/50">
+                        <div className="flex items-center space-x-3 p-3 rounded-xl glass-effect mb-3">
+                            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-black font-black doto-bold shadow-sm">
                                 {userData?.name?.charAt(0) || 'U'}
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="font-medium text-gray-900 truncate">{userData?.name || 'User'}</p>
-                                <p className="text-xs text-gray-500">Premium Member</p>
+                                <p className="font-semibold text-foreground truncate doto-button">{userData?.name || 'User'}</p>
+                                <p className="text-xs text-muted-foreground">Premium Member</p>
                             </div>
                         </div>
-                        <LogoutBtn className="w-full justify-center bg-white hover:bg-red-50 text-red-600 border border-red-200 hover:border-red-300" />
+                        <LogoutBtn className="w-full justify-center bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 hover:border-red-500/50 doto-button" />
                     </div>
                 )}
             </aside>
@@ -110,27 +123,41 @@ export default function Header() {
             {/* Mobile Overlay */}
             {sidebarOpen && (
                 <div 
-                    className="md:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
+                    className="md:hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-40"
                     onClick={() => setSidebarOpen(false)}
                 />
             )}
 
             {/* Mobile Sidebar */}
-            <aside className={`md:hidden fixed left-0 top-0 h-full w-80 bg-white shadow-2xl transform transition-transform duration-300 ease-out z-50
+            <aside className={`md:hidden fixed left-0 top-0 h-full w-80 bg-background shadow-2xl transform transition-transform duration-300 ease-out z-50
                 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                 {/* Mobile Logo */}
-                <div className="p-6 border-b border-gray-100">
+                <div className="p-6 border-b border-border">
                     <Link to="/" onClick={() => setSidebarOpen(false)} className="flex items-center space-x-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
-                            <span className="font-bold text-white text-xl">N</span>
+                        <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg">
+                            <span className="font-black text-black text-xl doto-bold">P</span>
                         </div>
                         <div>
-                            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-green-700">
+                            <span className="text-2xl font-black text-white doto-heading">
                                 Narrativ
                             </span>
-                            <p className="text-xs text-gray-500 -mt-1">Premium Writing</p>
+                            <p className="text-xs text-muted-foreground -mt-1">Writing's Platform</p>
                         </div>
                     </Link>
+                    
+                    {/* Mobile Website Link */}
+                    <div className="mt-4">
+                        <a 
+                            href="https://watchpixels.onrender.com/" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-xs text-muted-foreground hover:text-white transition-colors"
+                            onClick={() => setSidebarOpen(false)}
+                        >
+                            <ExternalLink size={12} />
+                            <span>Visit our website</span>
+                        </a>
+                    </div>
                 </div>
 
                 {/* Mobile Navigation */}
@@ -142,17 +169,17 @@ export default function Header() {
                                 <button
                                     key={slug}
                                     onClick={() => { navigate(slug); setSidebarOpen(false); }}
-                                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200
+                                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 doto-button
                                         ${active 
-                                            ? 'bg-gradient-to-r from-emerald-50 to-green-50 text-emerald-700 shadow-sm border border-emerald-100' 
-                                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                                            ? 'bg-white/10 text-white shadow-sm border border-white/20' 
+                                            : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                                         }`}
                                 >
-                                    <span className={`transition-colors ${active ? 'text-emerald-600' : 'text-gray-400'}`}>
+                                    <span className={`transition-colors ${active ? 'text-white' : 'text-muted-foreground'}`}>
                                         {icon}
                                     </span>
                                     <span className="flex-1 text-left">{name}</span>
-                                    {active && <ChevronRight size={16} className="text-emerald-500" />}
+                                    {active && <ChevronRight size={16} className="text-white" />}
                                 </button>
                             )
                         }
@@ -162,18 +189,18 @@ export default function Header() {
 
                 {/* Mobile User Section */}
                 {authStatus && (
-                    <div className="p-4 border-t border-gray-100">
-                        <div className="flex items-center space-x-3 p-3 rounded-xl bg-gradient-to-r from-gray-50 to-green-50 mb-3">
-                            <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-green-500 rounded-full flex items-center justify-center text-white font-semibold shadow-sm">
+                    <div className="p-4 border-t border-border">
+                        <div className="flex items-center space-x-3 p-3 rounded-xl glass-effect mb-3">
+                            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-black font-black doto-bold shadow-sm">
                                 {userData?.name?.charAt(0) || 'U'}
                             </div>
                             <div className="flex-1">
-                                <p className="font-medium text-gray-900">{userData?.name || 'User'}</p>
-                                <p className="text-xs text-gray-500">Premium Member</p>
+                                <p className="font-semibold text-foreground doto-button">{userData?.name || 'User'}</p>
+                                <p className="text-xs text-muted-foreground">Premium Member</p>
                             </div>
                         </div>
                         <LogoutBtn 
-                            className="w-full justify-center bg-white hover:bg-red-50 text-red-600 border border-red-200 hover:border-red-300"
+                            className="w-full justify-center bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 hover:border-red-500/50 doto-button"
                             onClick={() => setSidebarOpen(false)} 
                         />
                     </div>
