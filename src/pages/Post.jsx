@@ -4,6 +4,7 @@ import appwriteService from "../appwrite/config";
 import { Button, Container } from "../components";
 import SmartImage from "../components/SmartImage";
 import parse from "html-react-parser";
+import DOMPurify from "dompurify";
 import { useSelector } from "react-redux";
 import { FaArrowUp, FaEdit, FaTrash } from "react-icons/fa";
 
@@ -236,7 +237,7 @@ export default function Post() {
                         ref={contentRef}
                         className="prose prose-lg max-w-none bg-card rounded-xl p-6 md:p-8 shadow-lg border border-border"
                     >
-                        {parse(post.content)}
+                        {parse(DOMPurify.sanitize(post.content))}
                     </article>
 
                     {/* Actions */}

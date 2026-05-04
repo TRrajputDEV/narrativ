@@ -21,7 +21,7 @@ function Signup() {
             const userData = await authService.createAccount(data)
             if (userData) {
                 const currentUser = await authService.getCurrentUser()
-                if (currentUser) dispatch(login(currentUser));
+                if (currentUser) dispatch(login({ userData: currentUser }));
                 navigate("/")
             }
         } catch (error) {

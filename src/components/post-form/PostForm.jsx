@@ -138,6 +138,7 @@ export default function PostForm({ post }) {
             // Update or create post
             const postData = {
                 ...data,
+                slug: data.slug || slugTransform(data.title),
                 featuredImage: fileId,
                 userId: userData.$id
             };
@@ -198,6 +199,7 @@ export default function PostForm({ post }) {
             </h2>
             
             <form onSubmit={handleSubmit(submit)} className="space-y-6 lg:space-y-0 lg:flex lg:gap-8">
+                <input type="hidden" {...register("slug", { required: true })} />
                 {/* Main Content Section */}
                 <div className="w-full lg:w-2/3 space-y-6">
                     <div className="bg-muted rounded-xl p-4 sm:p-6 border border-border/50">

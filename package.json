@@ -19,6 +19,7 @@
     "appwrite": "^18.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dompurify": "^3.4.2",
     "html-react-parser": "^5.2.5",
     "lucide-react": "^0.522.0",
     "react": "^19.1.0",
